@@ -842,6 +842,34 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 }
 .hp-outcome::before{content:'✓';font-size:9px}
 
+/* ── Happy Path video embed ─────────────────────── */
+.hp-video-wrap{
+  position:relative;
+  width:100%;
+  margin-bottom:clamp(28px,4vh,44px);
+  border-radius:clamp(10px,1.6vw,18px);
+  overflow:hidden;
+  border:1px solid rgba(28,64,77,.14);
+  box-shadow:0 12px 40px rgba(28,64,77,.1);
+  background:#0D1A1E;
+}
+.hp-video-wrap video{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:16/9;
+  object-fit:cover;
+}
+.hp-video-caption{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  padding:clamp(10px,1.5vw,16px) clamp(14px,2vw,22px);
+  background:linear-gradient(to top, rgba(13,26,30,.75) 0%, transparent 100%);
+  font-size:var(--fs-small);color:rgba(255,255,255,.75);
+  font-weight:500;letter-spacing:.01em;
+  pointer-events:none;
+}
+.hp-video-caption strong{color:#DDFF8E;font-weight:700}
 
 
 
@@ -1276,6 +1304,17 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
     <div class="hp-label">The happy path — in the wild</div>
     <h2 class="hp-headline">Real work. Zero context tax.<br><em>Pick a scenario.</em></h2>
     <p class="hp-sub">Every scenario below happened inside Syncless. One goal, one task, one thread — no standups, no re-briefing, no "where were we?" This is what the happy path looks like at scale.</p>
+
+    <!-- Video demo -->
+    <div class="hp-video-wrap">
+      <video
+        src="https://assets.syncless.ai/videos/Flow_1.mp4"
+        autoplay muted loop playsinline
+        preload="metadata"
+        aria-label="Syncless happy path — context flowing through a task in real time"
+      ></video>
+      <div class="hp-video-caption"><strong>See it live —</strong> context traveling with the task, zero re-briefing.</div>
+    </div>
 
     <!-- Scenario tabs -->
     <div class="hp-tabs" role="tablist">
