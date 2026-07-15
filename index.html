@@ -126,7 +126,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
   letter-spacing:-.055em;
   line-height:.9;
   color:var(--white);
-  text-shadow:0 2px 16px rgba(0,0,0,.35);
+
   margin:0;
   grid-column:1;grid-row:2/4;
   align-self:center;
@@ -195,7 +195,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
   line-height:1.25;
   letter-spacing:-.015em;
   color:var(--white);
-  text-shadow:0 2px 16px rgba(0,0,0,.35);
+
 }
 .q-text em{font-style:normal;color:var(--red)}
 
@@ -239,7 +239,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
   justify-content:space-between;
   gap:20px;
   color:var(--white);
-  text-shadow:0 2px 16px rgba(0,0,0,.35);
+
 }
 .chaos-caption strong{
   display:block;
@@ -359,7 +359,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 .bridge-question .container{width:100%}
 .bridge-eyebrow{
   font-size:var(--fs-small);font-weight:800;letter-spacing:.14em;
-  text-transform:uppercase;color:#FF656A;
+  text-transform:uppercase;color:#1C404D;
   margin-bottom:clamp(20px,3vh,32px);
 }
 .bridge-headline{
@@ -369,9 +369,9 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
   letter-spacing:-.035em;
   line-height:1.06;
   color:var(--white);
-  text-shadow:0 2px 16px rgba(0,0,0,.35);
+
 }
-.bridge-headline em{font-style:normal;color:var(--accent)}
+.bridge-headline em{font-style:normal;color:#1C404D}
 
 .bridge-visual{
   min-height:100svh;
@@ -472,7 +472,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
   font-size:var(--fs-h3);
   font-weight:700;
   color:var(--white);
-  text-shadow:0 2px 16px rgba(0,0,0,.35);
+
   max-width:44ch;
   margin:0 auto clamp(12px,1.8vh,20px);
   line-height:1.35;
@@ -503,7 +503,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 
 /* ── 5. SOLUTION ───────────────────────────────── */
 .solution{
-  background: #F5FAF7;
+  background: transparent;
   padding:clamp(52px,7vh,88px) 0;
   border-bottom:none;
 }
@@ -514,7 +514,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 
 /* Pipeline */
 .pipeline{
-  background:#fff;
+  background:transparent;
   border:1px solid rgba(28,64,77,.12);
   box-shadow:0 4px 20px rgba(28,64,77,.06);
   border-radius:var(--radius);
@@ -615,7 +615,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 
 /* Feature cards */
 /* Features — standalone rows */
-.features-page{display:flex;align-items:center;background:var(--surface);padding:clamp(52px,7vh,88px) 0}
+.features-page{display:flex;align-items:center;background:transparent;padding:clamp(52px,7vh,88px) 0}
 .features-page .features-label{color:var(--ink)}
 .features-page .fr-body h3{color:var(--ink)}
 .features-page .fr-body p{color:var(--ink-3)}
@@ -676,7 +676,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 .trust{
   padding:clamp(36px,5vh,52px) 0;
   border-bottom:none;
-  background:#fff;
+  background:transparent;
 }
 .trust-inner{display:flex;align-items:flex-start;gap:clamp(16px,2.5vw,28px);flex-wrap:wrap}
 .trust-badge{
@@ -725,42 +725,11 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 .btn-s:hover{border-color:#1C404D;color:#fff;background:#1C404D}
 
 /* footer */
-.footer{background:transparent;padding:clamp(14px,2vh,22px) 0;border-top:1px solid rgba(255,255,255,.06)}
-.footer-inner{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;font-size:var(--fs-small);color:rgba(255,255,255,.5)}
-.footer-logo{font-weight:700;color:rgba(255,255,255,.85);font-size:14px;letter-spacing:-.01em}
+.footer{background:transparent;padding:clamp(14px,2vh,22px) 0;border-top:1px solid rgba(0,0,0,.08)}
+.footer-inner{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;font-size:var(--fs-small);color:var(--ink-3)}
+.footer-logo{font-weight:700;color:var(--ink);font-size:14px;letter-spacing:-.01em}
 
 /* ── SITE LOGO ──────────────────────────────────── */
-.site-logo{
-  position:fixed;
-  top:clamp(14px,2.5vh,22px);
-  right:clamp(16px,3vw,32px);
-  z-index:100;
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  text-decoration:none;
-  opacity:1;
-  transition:opacity .2s;
-  background:rgba(13,26,30,0.55);
-  -webkit-backdrop-filter:blur(10px);
-  backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,0.1);
-  border-radius:99px;
-  padding:6px 12px;
-}
-.site-logo:hover{opacity:.88}
-.site-logo-mark{
-  width:22px;height:22px;
-  border-radius:6px;
-  overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
-}
-.site-logo-wordmark{
-  font-size:12px;font-weight:700;letter-spacing:-.01em;
-  color:#fff;
-}
-
 
 /* ── Transition Text ────────────────────────── */
 .transition-text{max-width:980px;margin:0 auto}
@@ -847,11 +816,6 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 <body>
 
 <div id="bg-layer" style="position:fixed;inset:0;z-index:-1;background:rgb(13,26,30);will-change:background-color"></div>
-
-<!-- ── SITE LOGO ── -->
-<a class="site-logo" href="https://calendly.com/peter-han-langgenius/30min" target="_blank" rel="noopener" aria-label="Book a Demo">
-  <span class="site-logo-wordmark">Book a Demo</span>
-</a>
 
 <nav id="page-nav" class="page-nav" aria-label="Page navigation"></nav>
 
@@ -1203,18 +1167,18 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
      dark black → dark navy → dark → forest → deep teal → brand teal → dark end
   ─────────────────────────────────────────────────────── */
   var STOPS = [
-    { sel: '.hook',              rgb: [13,  26,  30 ] },  // #0D1A1E  近黑
-    { sel: '.questions',        rgb: [17,  24,  32 ] },  // #111820  深暗蓝
-    { sel: '.data',              rgb: [13,  22,  26 ] },  // 稍深
-    { sel: '.rootcause',        rgb: [15,  30,  26 ] },  // 暗森林绿
-    { sel: '.bridge-question',  rgb: [50,  80,  90 ] },  // 开始变浅
-    { sel: '.bridge-visual',    rgb: [120, 170, 165] },  // 中间色调
-    { sel: '#scene-transition', rgb: [200, 230, 210] },  // 渐变到亮绿 — 转折点
-    { sel: '.solution',         rgb: [245, 250, 247] },  // #F5FAF7 明快浅绿
-    { sel: '.features-page',    rgb: [247, 248, 251] },  // var(--surface)
-    { sel: '.trust',            rgb: [255, 255, 255] },  // 纯白
-    { sel: '.cta',              rgb: [245, 250, 247] },  // 保持亮
-    { sel: '.footer',           rgb: [28,  64,  77 ] },  // #1C404D 品牌青尾
+    { sel: ".hook",              rgb: [10,  20,  25 ] },
+    { sel: ".questions",         rgb: [18,  30,  38 ] },
+    { sel: ".data",              rgb: [25,  42,  50 ] },
+    { sel: ".rootcause",         rgb: [35,  58,  65 ] },
+    { sel: ".bridge-question",   rgb: [160, 200, 195] },
+    { sel: ".bridge-visual",     rgb: [200, 225, 215] },
+    { sel: "#scene-transition",  rgb: [170, 210, 195] },
+    { sel: ".solution",          rgb: [230, 242, 235] },
+    { sel: ".features-page",     rgb: [242, 245, 248] },
+    { sel: ".trust",             rgb: [250, 252, 253] },
+    { sel: ".cta-hero",          rgb: [255, 255, 255] },
+    { sel: ".footer",            rgb: [248, 250, 250] },
   ];
 
   function lerp(a,b,t){ return a+(b-a)*t; }
