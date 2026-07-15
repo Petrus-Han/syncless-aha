@@ -628,6 +628,10 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 
 /* Feature cards */
 /* Features — standalone rows */
+.features-page{display:flex;align-items:center;background:var(--surface);padding:clamp(52px,7vh,88px) 0}
+.features-page .features-label{color:var(--ink)}
+.features-page .fr-body h3{color:var(--ink)}
+.features-page .fr-body p{color:var(--ink-3)}
 .features-standalone{
   margin-top:clamp(40px,5.5vh,64px);
   display:flex;flex-direction:column;gap:clamp(16px,2.5vh,24px);
@@ -1104,6 +1108,13 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
       </div>
 
     <!-- Features — 独立区块 -->
+  </div>
+</section>
+
+
+<!-- ── FEATURES ── -->
+<section class="features-page">
+  <div class="container">
     <div class="features-standalone">
       <p class="features-label">Three things Syncless gives your team</p>
 
@@ -1137,7 +1148,6 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
     </div>
   </div>
 </section>
-
 <!-- ── 6. TRUST ── -->
 <section class="trust">
   <div class="container">
@@ -1207,6 +1217,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
     { sel: '.bridge-visual',    rgb: [9,   18,  22 ] },  // 深色视觉页
     { sel: '#scene-transition', rgb: [200, 230, 210] },  // 渐变到亮绿 — 转折点
     { sel: '.solution',         rgb: [245, 250, 247] },  // #F5FAF7 明快浅绿
+    { sel: '.features-page',    rgb: [247, 248, 251] },  // var(--surface)
     { sel: '.trust',            rgb: [255, 255, 255] },  // 纯白
     { sel: '.cta',              rgb: [245, 250, 247] },  // 保持亮
     { sel: '.footer',           rgb: [28,  64,  77 ] },  // #1C404D 品牌青尾
@@ -1284,6 +1295,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
     {title:'Context converges through Syncless',image:'syncless-context-bridge-base.webp'},
     {title:'When context flows, people breathe.',image:'syncless-context-flows-sky.webp'},
     {title:'Context travels with the task',light:true},
+    {title:'Three things Syncless gives',light:true},
     {title:'Your creds. Your agent.',light:true},
     {title:'Let it travel with the work.',cta:true}
   ];
