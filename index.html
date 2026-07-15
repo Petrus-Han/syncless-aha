@@ -1342,19 +1342,61 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 
     <!-- Scenario tabs -->
     <div class="hp-tabs" role="tablist">
-      <button class="hp-tab active" role="tab" aria-selected="true" data-hp="gtm">
+      <button class="hp-tab active" role="tab" aria-selected="true" data-hp="review">
+        <span class="hp-tab-dot"></span> Teammate Code Review
+      </button>
+      <button class="hp-tab" role="tab" aria-selected="false" data-hp="gtm">
         <span class="hp-tab-dot"></span> GTM Landing Page
       </button>
       <button class="hp-tab" role="tab" aria-selected="false" data-hp="launch">
         <span class="hp-tab-dot"></span> Product Launch Brief
       </button>
-      <button class="hp-tab" role="tab" aria-selected="false" data-hp="review">
-        <span class="hp-tab-dot"></span> Cross-Team Code Review
-      </button>
     </div>
 
-    <!-- ── Scenario 1: GTM Landing Page ── -->
-    <div class="hp-scenario active" id="hp-gtm" role="tabpanel">
+    <!-- ── Scenario 1: Teammate Code Review ── -->
+    <div class="hp-scenario active" id="hp-review" role="tabpanel">
+      <div class="hp-steps">
+        <div class="hp-step">
+          <div class="hp-num">01</div>
+          <div class="hp-body">
+            <h3>Han ships a PR and delegates the review to Yeuoly</h3>
+            <p>"API contract changed in 3 places. Yeuoly — can you validate frontend usage and confirm nothing breaks before I merge?"</p>
+            <span class="hp-tag">Teammates, async</span>
+          </div>
+        </div>
+        <div class="hp-step">
+          <div class="hp-num">02</div>
+          <div class="hp-body">
+            <h3>Yeuoly's agent inherits everything Han's agent already knew</h3>
+            <p>Full API spec, prior integration decisions, the original design doc — all carried in the task. Yeuoly jumps straight to reviewing the diff. No "can you re-explain what changed?" messages.</p>
+          </div>
+        </div>
+        <div class="hp-step">
+          <div class="hp-num">03</div>
+          <div class="hp-body">
+            <h3>Yeuoly flags two issues. Han fixes both and responds.</h3>
+            <p>Yeuoly's agent spots two call sites using the deprecated param shape and sends suggested fixes back to Han's task. Han applies both in one commit and marks the review resolved.</p>
+            <span class="hp-tag">Caught in review, not in prod</span>
+          </div>
+        </div>
+        <div class="hp-step accent">
+          <div class="hp-num">04</div>
+          <div class="hp-body">
+            <h3>Han merges. Yeuoly confirms. Done by EOD.</h3>
+            <p>Two engineers, two reps, one task thread. No Slack, no Jira ticket, no sync meeting. Both sides had the same context the whole time.</p>
+            <span class="hp-outcome">Shipped same-day, no regressions</span>
+          </div>
+        </div>
+      </div>
+      <div class="hp-proof-grid">
+        <div class="hp-stat-card"><span class="hp-stat-val">&lt; 1 day</span><span class="hp-stat-label">Review cycle time</span></div>
+        <div class="hp-stat-card"><span class="hp-stat-val">0</span><span class="hp-stat-label">Sync meetings needed</span></div>
+        <div class="hp-stat-card"><span class="hp-stat-val">2</span><span class="hp-stat-label">Bugs caught pre-merge</span></div>
+      </div>
+    </div>
+
+    <!-- ── Scenario 2: GTM Landing Page ── -->
+    <div class="hp-scenario" id="hp-gtm" role="tabpanel">
       <div class="hp-steps">
         <div class="hp-step">
           <div class="hp-num">01</div>
@@ -1367,7 +1409,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
         <div class="hp-step">
           <div class="hp-num">02</div>
           <div class="hp-body">
-            <h3>Rep picks up full context automatically</h3>
+            <h3>Peter's agent picks up full context automatically</h3>
             <p>Brand, tone, prior decisions, image assets — all already in the task. No re-briefing. No context dump.</p>
           </div>
         </div>
@@ -1395,7 +1437,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
       </div>
     </div>
 
-    <!-- ── Scenario 2: Product Launch Brief ── -->
+    <!-- ── Scenario 3: Product Launch Brief ── -->
     <div class="hp-scenario" id="hp-launch" role="tabpanel">
       <div class="hp-steps">
         <div class="hp-step">
@@ -1410,14 +1452,14 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
           <div class="hp-num">02</div>
           <div class="hp-body">
             <h3>Context travels with the task — not the person</h3>
-            <p>Product positioning, previous release notes, brand voice doc — the rep inherits it all from the upstream task. No Slack thread to dig through.</p>
+            <p>Product positioning, previous release notes, brand voice doc — the agent inherits it all from the upstream task. No Slack thread to dig through.</p>
           </div>
         </div>
         <div class="hp-step">
           <div class="hp-num">03</div>
           <div class="hp-body">
-            <h3>Rep drafts, refines, and flags for review</h3>
-            <p>Two rounds of copy refinement, one tone adjustment after feedback. The rep re-reads its own prior drafts — not the human's memory.</p>
+            <h3>Agent drafts, refines, and flags for review</h3>
+            <p>Two rounds of copy refinement, one tone adjustment after feedback. The agent re-reads its own prior drafts — not the human's memory.</p>
             <span class="hp-tag">Human reviews once, not five times</span>
           </div>
         </div>
@@ -1434,48 +1476,6 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
         <div class="hp-stat-card"><span class="hp-stat-val">3</span><span class="hp-stat-label">Deliverables, one ask</span></div>
         <div class="hp-stat-card"><span class="hp-stat-val">1</span><span class="hp-stat-label">Review pass needed</span></div>
         <div class="hp-stat-card"><span class="hp-stat-val">2 days</span><span class="hp-stat-label">Ahead of schedule</span></div>
-      </div>
-    </div>
-
-    <!-- ── Scenario 3: Cross-Team Code Review ── -->
-    <div class="hp-scenario" id="hp-review" role="tabpanel">
-      <div class="hp-steps">
-        <div class="hp-step">
-          <div class="hp-num">01</div>
-          <div class="hp-body">
-            <h3>Backend engineer opens a PR, tags the frontend team</h3>
-            <p>"API contract changed in 3 places. Need frontend to validate their usage and confirm nothing breaks before merge."</p>
-            <span class="hp-tag">Cross-team, async</span>
-          </div>
-        </div>
-        <div class="hp-step">
-          <div class="hp-num">02</div>
-          <div class="hp-body">
-            <h3>Frontend rep reads the PR diff — not a summary of a summary</h3>
-            <p>The upstream task carries the full API spec, previous integration decisions, and the original design doc. No "can you re-explain what changed?" messages.</p>
-          </div>
-        </div>
-        <div class="hp-step">
-          <div class="hp-num">03</div>
-          <div class="hp-body">
-            <h3>Issues surfaced before merge, not after</h3>
-            <p>Rep found two call sites using the deprecated param shape and flagged them with suggested fixes. The backend engineer applied both in one commit.</p>
-            <span class="hp-tag">Caught in review, not in prod</span>
-          </div>
-        </div>
-        <div class="hp-step accent">
-          <div class="hp-num">04</div>
-          <div class="hp-body">
-            <h3>PR merged same day. Zero regressions.</h3>
-            <p>Normally a multi-day back-and-forth across Slack, Jira, and a 30-min sync. This time: one task thread, both reps aligned, merged by EOD.</p>
-            <span class="hp-outcome">Shipped same-day, no regressions</span>
-          </div>
-        </div>
-      </div>
-      <div class="hp-proof-grid">
-        <div class="hp-stat-card"><span class="hp-stat-val">&lt; 1 day</span><span class="hp-stat-label">Review cycle time</span></div>
-        <div class="hp-stat-card"><span class="hp-stat-val">0</span><span class="hp-stat-label">Sync meetings needed</span></div>
-        <div class="hp-stat-card"><span class="hp-stat-val">2</span><span class="hp-stat-label">Bugs caught pre-merge</span></div>
       </div>
     </div>
 
