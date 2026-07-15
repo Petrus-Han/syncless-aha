@@ -700,6 +700,87 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 
 /* ── 7. CTA ────────────────────────────────────── */
 
+/* ── HAPPY PATH ─────────────────────────────────── */
+.happy-path{
+  background:transparent;
+  padding:clamp(56px,7.5vh,96px) 0;
+  display:flex;align-items:center;
+}
+.hp-label{
+  font-size:var(--fs-small);font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#1C404D;
+  margin-bottom:clamp(6px,1vh,10px);
+}
+.hp-headline{
+  font-size:var(--fs-h2);font-weight:700;letter-spacing:-.02em;line-height:1.2;
+  color:var(--ink);margin-bottom:clamp(8px,1.2vh,14px);
+}
+.hp-headline em{font-style:normal;color:#1C404D}
+.hp-sub{
+  font-size:var(--fs-body);color:var(--ink-2);
+  max-width:58ch;margin-bottom:clamp(32px,4.5vh,52px);line-height:1.7;
+}
+.hp-steps{
+  display:flex;flex-direction:column;gap:0;
+  counter-reset:hp-step;
+}
+.hp-step{
+  display:grid;
+  grid-template-columns:clamp(36px,4vw,48px) 1fr;
+  gap:clamp(14px,2vw,22px);
+  padding:clamp(18px,2.5vw,26px) clamp(18px,2.5vw,26px) clamp(18px,2.5vw,26px) 0;
+  position:relative;
+  border-left:2px solid transparent;
+  transition:border-color .2s;
+}
+.hp-step:not(:last-child)::after{
+  content:'';position:absolute;left:clamp(17px,1.95vw,23px);top:clamp(54px,7vw,74px);
+  width:2px;bottom:0;background:rgba(28,64,77,.12);
+}
+.hp-num{
+  width:clamp(36px,4vw,48px);height:clamp(36px,4vw,48px);
+  border-radius:50%;
+  background:rgba(28,64,77,.08);border:1.5px solid rgba(28,64,77,.18);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-size:var(--fs-small);font-weight:800;color:#1C404D;
+  position:relative;z-index:1;
+}
+.hp-step.accent .hp-num{background:#1C404D;border-color:#1C404D;color:#DDFF8E}
+.hp-body{padding-top:clamp(6px,1vw,10px)}
+.hp-body h3{
+  font-size:var(--fs-body);font-weight:700;color:var(--ink);
+  margin-bottom:4px;line-height:1.3;
+}
+.hp-body p{
+  font-size:var(--fs-small);color:var(--ink-3);line-height:1.6;max-width:52ch;
+}
+.hp-body .hp-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  margin-top:8px;
+  font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:#fff;background:#1C404D;
+  padding:4px 10px;border-radius:99px;
+}
+.hp-proof{
+  margin-top:clamp(32px,4.5vh,48px);
+  padding:clamp(20px,2.8vw,28px) clamp(22px,3vw,32px);
+  background:rgba(28,64,77,.05);
+  border:1px solid rgba(28,64,77,.14);
+  border-left:3px solid #1C404D;
+  border-radius:0 var(--radius) var(--radius) 0;
+}
+.hp-proof-eyebrow{
+  font-size:var(--fs-small);font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:#1C404D;margin-bottom:8px;
+}
+.hp-proof p{
+  font-size:var(--fs-body);font-weight:600;color:var(--ink);
+  line-height:1.5;margin-bottom:6px;
+}
+.hp-proof span{
+  font-size:var(--fs-small);color:var(--ink-3);line-height:1.6;
+}
+
 
 
 
@@ -1129,6 +1210,59 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 </section>
 
 <!-- ── 7. CTA + Happy Ending Image ── -->
+<!-- ── HAPPY PATH ── -->
+<section class="happy-path">
+  <div class="container">
+    <div class="hp-label">This page is the proof</div>
+    <h2 class="hp-headline">From idea to shipped —<br><em>without a single standup.</em></h2>
+    <p class="hp-sub">This landing page was built end-to-end through Syncless. Peter had a goal. He described it once. His AI rep took it from there — researching, writing, iterating, pushing to GitHub. This is what the happy path looks like.</p>
+
+    <div class="hp-steps">
+
+      <div class="hp-step">
+        <div class="hp-num">01</div>
+        <div class="hp-body">
+          <h3>Peter describes the goal</h3>
+          <p>"Build a GTM landing page for Syncless. Narrative arc, scroll-snap, dark-to-light, Book a Demo CTA."</p>
+          <span class="hp-tag">One message. No ticket.</span>
+        </div>
+      </div>
+
+      <div class="hp-step">
+        <div class="hp-num">02</div>
+        <div class="hp-body">
+          <h3>Rep picks up full context automatically</h3>
+          <p>Brand, tone, prior decisions, image assets — all already in the task. No re-briefing. No context dump.</p>
+        </div>
+      </div>
+
+      <div class="hp-step">
+        <div class="hp-num">03</div>
+        <div class="hp-body">
+          <h3>12 iterations. Each one shipped.</h3>
+          <p>Copy rewrites, scroll behavior fix, pipeline redesign, contrast pass, CTA change — every round a direct push to GitHub.</p>
+          <span class="hp-tag">Zero context reset between rounds</span>
+        </div>
+      </div>
+
+      <div class="hp-step accent">
+        <div class="hp-num">04</div>
+        <div class="hp-body">
+          <h3>You're looking at the result</h3>
+          <p>No PM handoff. No design-to-dev gap. No "where were we?" The work carried its own context the entire way.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="hp-proof">
+      <div class="hp-proof-eyebrow">Real numbers from this project</div>
+      <p>12 shipped changes &nbsp;·&nbsp; 0 standups &nbsp;·&nbsp; 1 conversation thread</p>
+      <span>From "build a landing page" to a live URL at petrus-han.github.io/syncless-aha — in a single Syncless task.</span>
+    </div>
+  </div>
+</section>
+
 <section class="cta-hero">
   <img class="cta-bg-img" src="syncless-cta-bg.webp" alt="Team sharing a meal in green field">
   <div class="cta-glass">
@@ -1177,6 +1311,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
     { sel: ".solution",          rgb: [230, 242, 235] },
     { sel: ".features-page",     rgb: [242, 245, 248] },
     { sel: ".trust",             rgb: [250, 252, 253] },
+    { sel: ".happy-path",        rgb: [248, 250, 251] },
     { sel: ".cta-hero",          rgb: [255, 255, 255] },
     { sel: ".footer",            rgb: [248, 250, 250] },
   ];
@@ -1255,6 +1390,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
     {title:'Context travels with the task',light:true},
     {title:'What Syncless gives your team',light:true},
     {title:'Your creds. Your agent.',light:true},
+    {title:'This page is the proof',light:true},
     {title:'Let it travel with the work.',cta:true}
   ];
 
