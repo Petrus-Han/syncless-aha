@@ -871,6 +871,31 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 }
 .hp-video-caption strong{color:#DDFF8E;font-weight:700}
 
+/* Mute toggle button */
+.hp-mute-btn{
+  position:absolute;
+  top:clamp(10px,1.5vw,16px);
+  right:clamp(10px,1.5vw,16px);
+  z-index:10;
+  width:36px;height:36px;
+  border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.35);
+  background:rgba(13,26,30,.55);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  color:#fff;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .18s,border-color .18s,transform .15s;
+  padding:0;
+}
+.hp-mute-btn:hover{
+  background:rgba(28,64,77,.85);
+  border-color:rgba(255,255,255,.7);
+  transform:scale(1.08);
+}
+.hp-mute-btn svg{width:16px;height:16px;flex-shrink:0}
+
 
 
 .btn-p{
@@ -1308,11 +1333,27 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
     <!-- Video demo -->
     <div class="hp-video-wrap">
       <video
+        id="hp-video"
         src="https://assets.syncless.ai/videos/Flow_1.mp4"
         autoplay muted loop playsinline
         preload="metadata"
         aria-label="Syncless happy path — context flowing through a task in real time"
       ></video>
+      <!-- Mute toggle -->
+      <button class="hp-mute-btn" id="hp-mute-btn" aria-label="Unmute video" title="Unmute">
+        <!-- muted icon (shown by default) -->
+        <svg id="hp-icon-muted" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 7H6L11 3v14l-5-4H3V7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <line x1="14" y1="7" x2="18" y2="13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="18" y1="7" x2="14" y2="13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <!-- unmuted icon (hidden by default) -->
+        <svg id="hp-icon-sound" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+          <path d="M3 7H6L11 3v14l-5-4H3V7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M14 7a4 4 0 0 1 0 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M16.5 4.5a7.5 7.5 0 0 1 0 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
       <div class="hp-video-caption"><strong>See it live —</strong> context traveling with the task, zero re-briefing.</div>
     </div>
 
@@ -1490,6 +1531,22 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 
 <script>
 (function(){
+  /* ── Video mute toggle ── */
+  var vid = document.getElementById('hp-video');
+  var muteBtn = document.getElementById('hp-mute-btn');
+  var iconMuted = document.getElementById('hp-icon-muted');
+  var iconSound = document.getElementById('hp-icon-sound');
+  if(vid && muteBtn){
+    muteBtn.addEventListener('click', function(){
+      vid.muted = !vid.muted;
+      var isMuted = vid.muted;
+      iconMuted.style.display = isMuted ? '' : 'none';
+      iconSound.style.display = isMuted ? 'none' : '';
+      muteBtn.setAttribute('aria-label', isMuted ? 'Unmute video' : 'Mute video');
+      muteBtn.setAttribute('title', isMuted ? 'Unmute' : 'Mute');
+    });
+  }
+
   /* ── Happy-path scenario tabs ── */
   var hpTabs = document.querySelectorAll('.hp-tab');
   hpTabs.forEach(function(tab){
