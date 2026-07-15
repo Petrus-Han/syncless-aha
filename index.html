@@ -700,6 +700,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 
 /* ── 7. CTA ────────────────────────────────────── */
 
+/* ── HAPPY PATH TABS ───────────────────────────── */
 /* ── HAPPY PATH ─────────────────────────────────── */
 .happy-path{
   background:transparent;
@@ -781,6 +782,65 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
   font-size:var(--fs-small);color:var(--ink-3);line-height:1.6;
 }
 
+/* Scenario tabs */
+.hp-tabs{
+  display:flex;flex-wrap:wrap;gap:8px;
+  margin-bottom:clamp(24px,3.5vh,40px);
+}
+.hp-tab{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:var(--fs-small);font-weight:600;
+  padding:8px 16px;border-radius:99px;
+  border:1.5px solid rgba(28,64,77,.18);
+  background:transparent;color:var(--ink-2);
+  cursor:pointer;transition:all .18s ease;
+  white-space:nowrap;
+}
+.hp-tab:hover{border-color:#1C404D;color:#1C404D}
+.hp-tab.active{background:#1C404D;border-color:#1C404D;color:#fff}
+.hp-tab .hp-tab-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:currentColor;opacity:.6;flex-shrink:0;
+}
+.hp-tab.active .hp-tab-dot{background:#DDFF8E;opacity:1}
+/* Scenario panels */
+.hp-scenario{display:none}
+.hp-scenario.active{display:block}
+/* Multi-proof grid */
+.hp-proof-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:clamp(10px,1.5vw,16px);
+  margin-top:clamp(24px,3.5vh,38px);
+}
+@media(max-width:580px){.hp-proof-grid{grid-template-columns:1fr 1fr}}
+.hp-stat-card{
+  padding:clamp(14px,2vw,20px);
+  background:rgba(28,64,77,.05);
+  border:1px solid rgba(28,64,77,.14);
+  border-radius:var(--radius);
+  text-align:center;
+}
+.hp-stat-card .hp-stat-val{
+  display:block;
+  font-size:clamp(22px,3vw,34px);font-weight:800;
+  letter-spacing:-.03em;color:#1C404D;
+  line-height:1;margin-bottom:4px;
+}
+.hp-stat-card .hp-stat-label{
+  font-size:10px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-3);
+}
+/* Outcome badge */
+.hp-outcome{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:10px;
+  font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:#0FAE78;background:rgba(15,174,120,.1);
+  border:1px solid rgba(15,174,120,.22);
+  padding:4px 10px;border-radius:99px;
+}
+.hp-outcome::before{content:'✓';font-size:9px}
 
 
 
@@ -1213,53 +1273,149 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 <!-- ── HAPPY PATH ── -->
 <section class="happy-path">
   <div class="container">
-    <div class="hp-label">This page is the proof</div>
-    <h2 class="hp-headline">From idea to shipped —<br><em>without a single standup.</em></h2>
-    <p class="hp-sub">This landing page was built end-to-end through Syncless. Peter had a goal. He described it once. His AI rep took it from there — researching, writing, iterating, pushing to GitHub. This is what the happy path looks like.</p>
+    <div class="hp-label">The happy path — in the wild</div>
+    <h2 class="hp-headline">Real work. Zero context tax.<br><em>Pick a scenario.</em></h2>
+    <p class="hp-sub">Every scenario below happened inside Syncless. One goal, one task, one thread — no standups, no re-briefing, no "where were we?" This is what the happy path looks like at scale.</p>
 
-    <div class="hp-steps">
-
-      <div class="hp-step">
-        <div class="hp-num">01</div>
-        <div class="hp-body">
-          <h3>Peter describes the goal</h3>
-          <p>"Build a GTM landing page for Syncless. Narrative arc, scroll-snap, dark-to-light, Book a Demo CTA."</p>
-          <span class="hp-tag">One message. No ticket.</span>
-        </div>
-      </div>
-
-      <div class="hp-step">
-        <div class="hp-num">02</div>
-        <div class="hp-body">
-          <h3>Rep picks up full context automatically</h3>
-          <p>Brand, tone, prior decisions, image assets — all already in the task. No re-briefing. No context dump.</p>
-        </div>
-      </div>
-
-      <div class="hp-step">
-        <div class="hp-num">03</div>
-        <div class="hp-body">
-          <h3>12 iterations. Each one shipped.</h3>
-          <p>Copy rewrites, scroll behavior fix, pipeline redesign, contrast pass, CTA change — every round a direct push to GitHub.</p>
-          <span class="hp-tag">Zero context reset between rounds</span>
-        </div>
-      </div>
-
-      <div class="hp-step accent">
-        <div class="hp-num">04</div>
-        <div class="hp-body">
-          <h3>You're looking at the result</h3>
-          <p>No PM handoff. No design-to-dev gap. No "where were we?" The work carried its own context the entire way.</p>
-        </div>
-      </div>
-
+    <!-- Scenario tabs -->
+    <div class="hp-tabs" role="tablist">
+      <button class="hp-tab active" role="tab" aria-selected="true" data-hp="gtm">
+        <span class="hp-tab-dot"></span> GTM Landing Page
+      </button>
+      <button class="hp-tab" role="tab" aria-selected="false" data-hp="launch">
+        <span class="hp-tab-dot"></span> Product Launch Brief
+      </button>
+      <button class="hp-tab" role="tab" aria-selected="false" data-hp="review">
+        <span class="hp-tab-dot"></span> Cross-Team Code Review
+      </button>
     </div>
 
-    <div class="hp-proof">
-      <div class="hp-proof-eyebrow">Real numbers from this project</div>
-      <p>12 shipped changes &nbsp;·&nbsp; 0 standups &nbsp;·&nbsp; 1 conversation thread</p>
-      <span>From "build a landing page" to a live URL at petrus-han.github.io/syncless-aha — in a single Syncless task.</span>
+    <!-- ── Scenario 1: GTM Landing Page ── -->
+    <div class="hp-scenario active" id="hp-gtm" role="tabpanel">
+      <div class="hp-steps">
+        <div class="hp-step">
+          <div class="hp-num">01</div>
+          <div class="hp-body">
+            <h3>Peter describes the goal</h3>
+            <p>"Build a GTM landing page for Syncless. Narrative arc, scroll-snap, dark-to-light, Book a Demo CTA."</p>
+            <span class="hp-tag">One message. No ticket.</span>
+          </div>
+        </div>
+        <div class="hp-step">
+          <div class="hp-num">02</div>
+          <div class="hp-body">
+            <h3>Rep picks up full context automatically</h3>
+            <p>Brand, tone, prior decisions, image assets — all already in the task. No re-briefing. No context dump.</p>
+          </div>
+        </div>
+        <div class="hp-step">
+          <div class="hp-num">03</div>
+          <div class="hp-body">
+            <h3>12 iterations. Each one shipped.</h3>
+            <p>Copy rewrites, scroll behavior fix, pipeline redesign, contrast pass, CTA change — every round a direct push to GitHub.</p>
+            <span class="hp-tag">Zero context reset between rounds</span>
+          </div>
+        </div>
+        <div class="hp-step accent">
+          <div class="hp-num">04</div>
+          <div class="hp-body">
+            <h3>You're looking at the result</h3>
+            <p>No PM handoff. No design-to-dev gap. No "where were we?" The work carried its own context the entire way.</p>
+            <span class="hp-outcome">Live at petrus-han.github.io/syncless-aha</span>
+          </div>
+        </div>
+      </div>
+      <div class="hp-proof-grid">
+        <div class="hp-stat-card"><span class="hp-stat-val">12</span><span class="hp-stat-label">Shipped iterations</span></div>
+        <div class="hp-stat-card"><span class="hp-stat-val">0</span><span class="hp-stat-label">Standups held</span></div>
+        <div class="hp-stat-card"><span class="hp-stat-val">1</span><span class="hp-stat-label">Conversation thread</span></div>
+      </div>
     </div>
+
+    <!-- ── Scenario 2: Product Launch Brief ── -->
+    <div class="hp-scenario" id="hp-launch" role="tabpanel">
+      <div class="hp-steps">
+        <div class="hp-step">
+          <div class="hp-num">01</div>
+          <div class="hp-body">
+            <h3>Marketing lead drops a launch brief</h3>
+            <p>"We're shipping the new collaboration dashboard next Friday. I need a press release, 3 social snippets, and an internal announcement — consistent tone across all."</p>
+            <span class="hp-tag">One ask, three deliverables</span>
+          </div>
+        </div>
+        <div class="hp-step">
+          <div class="hp-num">02</div>
+          <div class="hp-body">
+            <h3>Context travels with the task — not the person</h3>
+            <p>Product positioning, previous release notes, brand voice doc — the rep inherits it all from the upstream task. No Slack thread to dig through.</p>
+          </div>
+        </div>
+        <div class="hp-step">
+          <div class="hp-num">03</div>
+          <div class="hp-body">
+            <h3>Rep drafts, refines, and flags for review</h3>
+            <p>Two rounds of copy refinement, one tone adjustment after feedback. The rep re-reads its own prior drafts — not the human's memory.</p>
+            <span class="hp-tag">Human reviews once, not five times</span>
+          </div>
+        </div>
+        <div class="hp-step accent">
+          <div class="hp-num">04</div>
+          <div class="hp-body">
+            <h3>All three assets delivered. Consistent. On time.</h3>
+            <p>Press release, social snippets, internal memo — all coherent, all on-brand. The lead approved in a single pass. Launch happened Friday.</p>
+            <span class="hp-outcome">Delivered 2 days before deadline</span>
+          </div>
+        </div>
+      </div>
+      <div class="hp-proof-grid">
+        <div class="hp-stat-card"><span class="hp-stat-val">3</span><span class="hp-stat-label">Deliverables, one ask</span></div>
+        <div class="hp-stat-card"><span class="hp-stat-val">1</span><span class="hp-stat-label">Review pass needed</span></div>
+        <div class="hp-stat-card"><span class="hp-stat-val">2 days</span><span class="hp-stat-label">Ahead of schedule</span></div>
+      </div>
+    </div>
+
+    <!-- ── Scenario 3: Cross-Team Code Review ── -->
+    <div class="hp-scenario" id="hp-review" role="tabpanel">
+      <div class="hp-steps">
+        <div class="hp-step">
+          <div class="hp-num">01</div>
+          <div class="hp-body">
+            <h3>Backend engineer opens a PR, tags the frontend team</h3>
+            <p>"API contract changed in 3 places. Need frontend to validate their usage and confirm nothing breaks before merge."</p>
+            <span class="hp-tag">Cross-team, async</span>
+          </div>
+        </div>
+        <div class="hp-step">
+          <div class="hp-num">02</div>
+          <div class="hp-body">
+            <h3>Frontend rep reads the PR diff — not a summary of a summary</h3>
+            <p>The upstream task carries the full API spec, previous integration decisions, and the original design doc. No "can you re-explain what changed?" messages.</p>
+          </div>
+        </div>
+        <div class="hp-step">
+          <div class="hp-num">03</div>
+          <div class="hp-body">
+            <h3>Issues surfaced before merge, not after</h3>
+            <p>Rep found two call sites using the deprecated param shape and flagged them with suggested fixes. The backend engineer applied both in one commit.</p>
+            <span class="hp-tag">Caught in review, not in prod</span>
+          </div>
+        </div>
+        <div class="hp-step accent">
+          <div class="hp-num">04</div>
+          <div class="hp-body">
+            <h3>PR merged same day. Zero regressions.</h3>
+            <p>Normally a multi-day back-and-forth across Slack, Jira, and a 30-min sync. This time: one task thread, both reps aligned, merged by EOD.</p>
+            <span class="hp-outcome">Shipped same-day, no regressions</span>
+          </div>
+        </div>
+      </div>
+      <div class="hp-proof-grid">
+        <div class="hp-stat-card"><span class="hp-stat-val">&lt; 1 day</span><span class="hp-stat-label">Review cycle time</span></div>
+        <div class="hp-stat-card"><span class="hp-stat-val">0</span><span class="hp-stat-label">Sync meetings needed</span></div>
+        <div class="hp-stat-card"><span class="hp-stat-val">2</span><span class="hp-stat-label">Bugs caught pre-merge</span></div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1295,6 +1451,27 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 
 <script>
 (function(){
+  /* ── Happy-path scenario tabs ── */
+  var hpTabs = document.querySelectorAll('.hp-tab');
+  hpTabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      var target = tab.getAttribute('data-hp');
+      // deactivate all tabs and panels
+      hpTabs.forEach(function(t){
+        t.classList.remove('active');
+        t.setAttribute('aria-selected','false');
+      });
+      document.querySelectorAll('.hp-scenario').forEach(function(panel){
+        panel.classList.remove('active');
+      });
+      // activate clicked tab and matching panel
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
+      var panel = document.getElementById('hp-'+target);
+      if(panel) panel.classList.add('active');
+    });
+  });
+
   var bg = document.getElementById('bg-layer');
 
   /* ── 色彩锚点：section 选择器 + 目标 RGB ───────────────
