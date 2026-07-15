@@ -1173,7 +1173,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
     { sel: ".rootcause",         rgb: [35,  58,  65 ] },
     { sel: ".bridge-question",   rgb: [160, 200, 195] },
     { sel: ".bridge-visual",     rgb: [200, 225, 215] },
-    { sel: "#scene-transition",  rgb: [170, 210, 195] },
+    { sel: "#scene-transition",  rgb: [215, 235, 225] },
     { sel: ".solution",          rgb: [230, 242, 235] },
     { sel: ".features-page",     rgb: [242, 245, 248] },
     { sel: ".trust",             rgb: [250, 252, 253] },
@@ -1322,6 +1322,8 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
   }
 
   applyColor(); // 初始化
+  window.addEventListener("scroll",function(){applyColor();updatePageNav();},{passive:true});
+  window.addEventListener("resize",function(){positions=null;applyColor();updatePageNav();},{passive:true});
 
   /* ── Pipeline capsule path ── */
   function buildPipePath(){
