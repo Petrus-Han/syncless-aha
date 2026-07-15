@@ -34,10 +34,10 @@
   --radius-sm:6px;
   --max-w:1040px;
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-snap-type:y mandatory;overflow-y:scroll}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Inter',system-ui,sans-serif;background:var(--white);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
 .container{max-width:var(--max-w);margin:0 auto;padding:0 clamp(20px,5vw,56px)}
-body>section{min-height:100svh}
+body>section{min-height:100svh;height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 .hook,.questions,.data,.chaos-visual,.rootcause,.solution,.trust{display:flex;align-items:center}
 .hook>.container,.questions>.container,.data>.container,.rootcause>.container,.solution>.container,.trust>.container{width:100%}
 
@@ -1287,70 +1287,38 @@ body>section{min-height:100svh}
     {title:'Your creds. Your agent.',light:true},
     {title:'Let it travel with the work.',cta:true}
   ];
-  var pageLockedUntil = 0;
-  var revealAnimating = false;
-  var wheelGestureActive = false;
-  var wheelQuietTimer = null;
 
+  /* ── Page nav dots (click to scroll) ── */
   if(pageNav){
     pages.forEach(function(page,index){
-      var meta = pageMeta[index] || {title:'Page '+(index+1)};
-      var button = document.createElement('button');
-      button.type = 'button';
-      button.setAttribute('aria-label','Go to page '+(index+1)+': '+meta.title);
+      var meta = pageMeta[index] || {title:"Page "+(index+1)};
+      var button = document.createElement("button");
+      button.type = "button";
+      button.setAttribute("aria-label","Go to page "+(index+1)+": "+meta.title);
 
-      var thumb = document.createElement('span');
-      thumb.className = 'page-thumb'+((meta.image||meta.cta)?' image':'')+(meta.light?' light':'');
-      if(meta.image) thumb.style.backgroundImage = 'url("'+meta.image+'")';
+      var thumb = document.createElement("span");
+      thumb.className = "page-thumb"+((meta.image||meta.cta)?" image":"")+(meta.light?" light":"");
+      if(meta.image) thumb.style.backgroundImage = "url(\""+meta.image+"\")";
       if(meta.cta){
-        var ctaImage = document.querySelector('.cta-bg-img');
-        if(ctaImage) thumb.style.backgroundImage = 'url("'+ctaImage.src+'")';
+        var ctaImage = document.querySelector(".cta-bg-img");
+        if(ctaImage) thumb.style.backgroundImage = "url(\""+ctaImage.src+"\")";
       }
 
-      var copy = document.createElement('span');
-      copy.className = 'page-thumb-copy';
-      var num = document.createElement('span');
-      num.className = 'page-thumb-num';
-      num.textContent = String(index+1).padStart(2,'0')+' / '+String(pages.length).padStart(2,'0');
-      var title = document.createElement('span');
-      title.className = 'page-thumb-title';
+      var copy = document.createElement("span");
+      copy.className = "page-thumb-copy";
+      var num = document.createElement("span");
+      num.className = "page-thumb-num";
+      num.textContent = String(index+1).padStart(2,"0")+" / "+String(pages.length).padStart(2,"0");
+      var title = document.createElement("span");
+      title.className = "page-thumb-title";
       title.textContent = meta.title;
       copy.appendChild(num);copy.appendChild(title);thumb.appendChild(copy);button.appendChild(thumb);
 
-      button.addEventListener('click',function(){
-        if(page === bridgeSection) bridgeSection.classList.remove('is-revealed');
-        pageLockedUntil = Date.now()+900;
-        page.scrollIntoView({behavior:'smooth',block:'start'});
+      button.addEventListener("click",function(){
+        page.scrollIntoView({behavior:"smooth",block:"start"});
       });
       pageNav.appendChild(button);navButtons.push(button);
     });
-  }
-
-  function updatePageNav(){
-    if(!navButtons.length) return;
-    var active = nearestPageIndex();
-    navButtons.forEach(function(button,index){
-      button.classList.toggle('active',index===active);
-      if(index===active) button.setAttribute('aria-current','page');
-      else button.removeAttribute('aria-current');
-    });
-  }
-
-  function animateBridgeReveal(show){
-    if(!bridgeSection || !bridgeReveal || revealAnimating) return;
-    revealAnimating = true;
-
-    var finished = false;
-    function releaseRevealLock(){
-      if(finished) return;
-      finished = true;
-      revealAnimating = false;
-      pageLockedUntil = Date.now() + 100;
-    }
-
-    bridgeReveal.addEventListener('transitionend',releaseRevealLock,{once:true});
-    bridgeSection.classList.toggle('is-revealed',show);
-    window.setTimeout(releaseRevealLock,1200);
   }
 
   function nearestPageIndex(){
@@ -1363,79 +1331,26 @@ body>section{min-height:100svh}
     return best;
   }
 
-  function turnPage(direction){
-    var currentIndex = nearestPageIndex();
-    var current = pages[currentIndex];
-
-    if(current === bridgeSection){
-      if(direction > 0 && !bridgeSection.classList.contains('is-revealed')){
-        animateBridgeReveal(true);
-        return;
-      }
-      if(direction < 0 && bridgeSection.classList.contains('is-revealed')){
-        animateBridgeReveal(false);
-        return;
-      }
-    }
-
-    var nextIndex = Math.max(0,Math.min(pages.length-1,currentIndex+direction));
-    if(nextIndex === currentIndex) return;
-    var next = pages[nextIndex];
-    if(next === bridgeSection){
-      bridgeSection.classList.toggle('is-revealed',direction < 0);
-    }
-    next.scrollIntoView({behavior:'smooth',block:'start'});
+  function updatePageNav(){
+    if(!navButtons.length) return;
+    var active = nearestPageIndex();
+    navButtons.forEach(function(button,index){
+      button.classList.toggle("active",index===active);
+      if(index===active) button.setAttribute("aria-current","page");
+      else button.removeAttribute("aria-current");
+    });
   }
 
-  /* ── Wheel ── */
-  window.addEventListener('wheel',function(event){
-    if(event.ctrlKey) return;
-    event.preventDefault();
-    window.clearTimeout(wheelQuietTimer);
-    wheelQuietTimer = window.setTimeout(function(){wheelGestureActive=false;},120);
-    if(Math.abs(event.deltaY) < 6) return;
-    if(revealAnimating || wheelGestureActive) return;
-    wheelGestureActive = true;
-    var now = Date.now();
-    if(now < pageLockedUntil) return;
-    pageLockedUntil = now + 680;
-    turnPage(event.deltaY > 0 ? 1 : -1);
-  },{passive:false});
+  /* ── Bridge reveal via IntersectionObserver ── */
+  if(bridgeSection && bridgeReveal){
+    var bridgeObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting) bridgeSection.classList.add("is-revealed");
+      });
+    },{threshold:0.5});
+    bridgeObs.observe(bridgeSection);
+  }
 
-  /* ── Touch swipe ── */
-  var touchStartY = 0;
-  var touchStartX = 0;
-  window.addEventListener('touchstart',function(event){
-    touchStartY = event.touches[0].clientY;
-    touchStartX = event.touches[0].clientX;
-  },{passive:true});
-  window.addEventListener('touchend',function(event){
-    var dy = touchStartY - event.changedTouches[0].clientY;
-    var dx = touchStartX - event.changedTouches[0].clientX;
-    if(Math.abs(dy) < 40 || Math.abs(dy) < Math.abs(dx)) return;
-    var now = Date.now();
-    if(revealAnimating || now < pageLockedUntil) return;
-    pageLockedUntil = now + 680;
-    turnPage(dy > 0 ? 1 : -1);
-  },{passive:true});
-  window.addEventListener('touchmove',function(event){
-    if(revealAnimating) event.preventDefault();
-  },{passive:false});
-
-  window.addEventListener('keydown',function(event){
-    var tag = event.target && event.target.tagName;
-    if(tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
-    var direction = 0;
-    if(event.key === 'ArrowDown' || event.key === 'PageDown' || (event.key === ' ' && !event.shiftKey)) direction = 1;
-    if(event.key === 'ArrowUp' || event.key === 'PageUp' || (event.key === ' ' && event.shiftKey)) direction = -1;
-    if(!direction) return;
-    event.preventDefault();
-    if(revealAnimating) return;
-    turnPage(direction);
-  });
-
-  window.addEventListener('scroll',function(){applyColor();updatePageNav();},{passive:true});
-  window.addEventListener('resize',function(){positions=null;applyColor();updatePageNav();},{passive:true});
   applyColor(); // 初始化
   updatePageNav();
 })();
