@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syncless — Are you suffering?</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0D1A1E;
+  --ink:#1A1D25;
+  --ink-2:#3D4150;
+  --ink-3:#6B7280;
+  --rule:#E4E7EE;
+  --surface:#F7F8FB;
+  --white:#FFFFFF;
+  --accent:#DDFF8E;
+  --accent-d:#C8F066;
+  --red:#E53E3E;
+  --teal:#1C404D;
+  --teal-mid:#1C404D;
+  --amber:#F59E0B;
+  --green:#10B981;
+
+  --fs-hero:   clamp(38px,6vw,80px);
+  --fs-h2:     clamp(22px,3vw,42px);
+  --fs-h3:     clamp(17px,2vw,26px);
+  --fs-body:   clamp(14px,1.4vw,18px);
+  --fs-small:  clamp(11px,1vw,13px);
+  --fs-stat:   clamp(28px,3.8vw,52px);
+  --fs-question:clamp(20px,2.8vw,38px);
+
+  --radius:12px;
+  --radius-sm:6px;
+  --max-w:1040px;
+}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Inter',system-ui,sans-serif;background:var(--white);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max-w);margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+body>section{min-height:100svh}
+.hook,.questions,.data,.chaos-visual,.rootcause,.solution,.trust{display:flex;align-items:center}
+.hook>.container,.questions>.container,.data>.container,.rootcause>.container,.solution>.container,.trust>.container{width:100%}
+
+/* ── PAGE DOT NAVIGATION ───────────────────────── */
+.page-nav{
+  position:fixed;right:clamp(8px,1.4vw,20px);top:50%;transform:translateY(-50%);
+  z-index:80;display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:10px 5px;
+  background:transparent;
+  border:0;
+}
+.page-nav button{
+  position:relative;width:20px;height:20px;padding:0;border:0;background:transparent;
+  cursor:pointer;border-radius:50%;
+}
+.page-nav button::before{
+  content:'';position:absolute;left:50%;top:50%;width:7px;height:7px;
+  transform:translate(-50%,-50%);border-radius:50%;
+  background:rgba(255,255,255,.48);border:1px solid rgba(13,26,30,.22);
+  box-shadow:0 1px 4px rgba(0,0,0,.18);
+  transition:width .22s ease,height .22s ease,background .22s ease,box-shadow .22s ease;
+}
+.page-nav button:hover::before{width:10px;height:10px;background:#fff}
+.page-nav button.active::before{
+  width:13px;height:13px;background:var(--accent);
+  border-color:#1C404D;box-shadow:0 0 0 3px rgba(221,255,142,.22),0 2px 8px rgba(0,0,0,.2);
+}
+.page-thumb{
+  position:absolute;right:30px;top:50%;width:190px;height:108px;
+  transform:translate(-10px,-50%);opacity:0;visibility:hidden;pointer-events:none;
+  overflow:hidden;border-radius:12px;border:1px solid rgba(255,255,255,.38);
+  background:#10252B;color:#fff;text-align:left;
+  box-shadow:0 14px 38px rgba(0,0,0,.3);
+  transition:opacity .18s ease,transform .18s ease,visibility .18s;
+}
+.page-nav button:hover .page-thumb,.page-nav button:focus-visible .page-thumb{
+  opacity:1;visibility:visible;transform:translate(0,-50%);
+}
+.page-thumb::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 20%,rgba(5,14,17,.84) 100%);
+}
+.page-thumb.image{background-size:cover;background-position:center}
+.page-thumb.light{background:#D5EBDD;color:#14242A}
+.page-thumb.light::after{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(217,242,225,.88))}
+.page-thumb-copy{position:absolute;z-index:1;left:12px;right:12px;bottom:10px}
+.page-thumb-num{display:block;font-size:8px;font-weight:800;letter-spacing:.14em;opacity:.6;margin-bottom:3px}
+.page-thumb-title{display:block;font-size:12px;font-weight:800;line-height:1.15;letter-spacing:-.01em}
+@media(max-width:720px){
+  .page-nav{right:4px;padding:8px 2px;background:transparent}
+  .page-thumb{display:none}
+}
+
+/* ── 1. HOOK ───────────────────────────────────── */
+.hook{
+  background:transparent;
+  padding:clamp(40px,6vh,72px) 0;
+  position:relative;
+  overflow:hidden;
+}
+.hook .container{
+  max-width:1180px;
+  min-height:calc(100svh - clamp(80px,12vh,144px));
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(240px,.65fr);
+  grid-template-rows:auto 1fr auto;
+  column-gap:clamp(36px,7vw,96px);
+}
+.hook::before{
+  content:'';position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse 70% 60% at 60% 40%, rgba(221,255,142,.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hook-label{
+  font-size:var(--fs-small);font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);
+  margin-bottom:clamp(16px,2.5vh,28px);
+  display:flex;align-items:center;gap:8px;
+  grid-column:1/-1;grid-row:1;
+}
+.hook-label::before{content:'';display:block;width:24px;height:1.5px;background:var(--accent)}
+.hook h1{
+  font-size:clamp(64px,10vw,128px);
+  font-weight:800;
+  letter-spacing:-.055em;
+  line-height:.9;
+  color:var(--white);
+  margin:0;
+  grid-column:1;grid-row:2/4;
+  align-self:center;
+}
+.hook h1 em{font-style:normal;color:var(--accent)}
+.hook-response{
+  grid-column:2;grid-row:3;
+  align-self:end;
+  padding-bottom:clamp(10px,2vh,22px);
+}
+.hook-aside{
+  font-size:clamp(13px,1.2vw,16px);font-weight:600;
+  color:rgba(255,255,255,.42);margin-bottom:2px;
+}
+.hook-team{
+  font-size:clamp(28px,3.2vw,46px);font-weight:850;
+  line-height:1.05;letter-spacing:-.035em;color:var(--accent);
+  margin-bottom:clamp(22px,3.5vh,38px);
+}
+.hook-setup{
+  font-size:clamp(14px,1.35vw,18px);line-height:1.55;
+  color:rgba(255,255,255,.55);margin-bottom:10px;
+}
+.hook-payoff{
+  font-size:clamp(19px,2.1vw,28px);font-weight:800;
+  line-height:1.2;letter-spacing:-.02em;color:var(--white);
+}
+@media(max-width:700px){
+  .hook .container{
+    grid-template-columns:1fr;
+    grid-template-rows:auto 1fr auto;
+    row-gap:24px;
+  }
+  .hook h1{grid-column:1;grid-row:2;font-size:clamp(58px,17vw,96px)}
+  .hook-response{grid-column:1;grid-row:3;max-width:34ch;padding-bottom:0;margin-left:auto}
+}
+
+/* ── 2. THREE QUESTIONS ────────────────────────── */
+.questions{
+  background:transparent;
+  padding:clamp(48px,6.5vh,80px) 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.q-label{
+  font-size:var(--fs-body);font-weight:600;letter-spacing:-.01em;
+  text-transform:none;color:rgba(255,255,255,.55);
+  margin-bottom:clamp(28px,4vh,44px);
+}
+.q-list{list-style:none;display:flex;flex-direction:column;gap:clamp(20px,3vh,32px)}
+.q-item{
+  display:grid;
+  grid-template-columns:clamp(32px,4vw,48px) 1fr;
+  gap:clamp(14px,2vw,22px);
+  align-items:start;
+}
+.q-num{
+  font-size:var(--fs-small);font-weight:800;
+  color:rgba(255,255,255,.15);
+  padding-top:clamp(6px,1vh,10px);
+  letter-spacing:.05em;
+  font-feature-settings:'tnum';
+}
+.q-text{
+  font-size:var(--fs-question);
+  font-weight:700;
+  line-height:1.25;
+  letter-spacing:-.015em;
+  color:var(--white);
+}
+.q-text em{font-style:normal;color:var(--red)}
+
+/* ── AI CHAOS VISUAL ───────────────────────────── */
+.chaos-visual{
+  background:transparent;
+  padding:clamp(8px,2vh,20px) clamp(12px,2vw,28px) clamp(48px,7vh,88px);
+}
+.chaos-frame{
+  position:relative;
+  max-width:1180px;
+  margin:0 auto;
+  overflow:hidden;
+  border-radius:clamp(12px,2vw,22px);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 28px 80px rgba(0,0,0,.42);
+  background:#071719;
+}
+.chaos-frame::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,transparent 48%,rgba(4,13,16,.9) 100%);
+  pointer-events:none;
+}
+.chaos-frame img{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:2816/1536;
+  object-fit:cover;
+}
+.chaos-caption{
+  position:absolute;
+  z-index:1;
+  left:clamp(18px,4vw,48px);
+  right:clamp(18px,4vw,48px);
+  bottom:clamp(16px,3.5vw,38px);
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:20px;
+  color:var(--white);
+}
+.chaos-caption strong{
+  display:block;
+  max-width:22ch;
+  font-size:clamp(20px,3vw,40px);
+  line-height:1.1;
+  letter-spacing:-.025em;
+}
+.chaos-caption span{
+  max-width:34ch;
+  color:rgba(255,255,255,.65);
+  font-size:var(--fs-small);
+  line-height:1.5;
+  text-align:right;
+}
+@media(max-width:620px){
+  .chaos-frame img{min-height:360px;object-position:center}
+  .chaos-caption{display:block}
+  .chaos-caption span{display:block;margin-top:8px;text-align:left}
+}
+
+/* ── 3. DATA ───────────────────────────────────── */
+.data{
+  background:transparent;
+  padding:clamp(48px,6.5vh,80px) 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.data-header{margin-bottom:clamp(28px,4vh,44px)}
+.data-label{font-size:var(--fs-small);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#1C404D;margin-bottom:8px}
+.data-headline{font-size:var(--fs-h2);font-weight:700;letter-spacing:-.02em;line-height:1.2;max-width:36ch;color:var(--white)}
+.data-sub{font-size:var(--fs-body);color:rgba(255,255,255,.45);margin-top:10px;max-width:60ch;line-height:1.65}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:clamp(12px,1.8vw,18px);
+  margin-bottom:clamp(20px,3vh,32px);
+}
+@media(max-width:560px){.stat-grid{grid-template-columns:1fr 1fr}}
+.stat{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:var(--radius);
+  padding:clamp(18px,2.5vw,26px);
+  position:relative;
+  overflow:hidden;
+}
+.stat.red   { border-top:3px solid var(--red) }
+.stat.amber { border-top:3px solid var(--amber) }
+.stat.accent{ border-top:3px solid var(--accent) }
+.stat-num{
+  font-size:var(--fs-stat);
+  font-weight:800;
+  letter-spacing:-.03em;
+  line-height:1;
+  margin-bottom:6px;
+}
+.stat.red    .stat-num{color:var(--red)}
+.stat.amber  .stat-num{color:var(--amber)}
+.stat.accent .stat-num{color:var(--accent)}
+.stat-desc{font-size:var(--fs-small);color:rgba(255,255,255,.45);line-height:1.45}
+.stat-unit{
+  font-size:clamp(14px,1.8vw,22px);
+  font-weight:600;
+  opacity:.6;
+  letter-spacing:0;
+}
+.stat-what{
+  font-size:var(--fs-small);
+  font-weight:700;
+  color:rgba(255,255,255,.7);
+  margin-bottom:8px;
+  letter-spacing:.02em;
+}
+
+
+.paradox-card{
+  background:var(--black);
+  border-radius:var(--radius);
+  padding:clamp(24px,3.5vw,36px);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(16px,2.5vw,28px);
+  align-items:center;
+}
+@media(max-width:520px){.paradox-card{grid-template-columns:1fr}}
+.paradox-left{}
+.paradox-eyebrow{font-size:var(--fs-small);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+.paradox-headline{font-size:var(--fs-h3);font-weight:700;color:var(--white);line-height:1.3;margin-bottom:10px}
+.paradox-body{font-size:var(--fs-small);color:rgba(255,255,255,.45);line-height:1.6}
+.paradox-right{
+  display:flex;flex-direction:column;gap:12px;
+}
+.paradox-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;border-radius:var(--radius-sm);
+  font-size:var(--fs-small);
+}
+.paradox-row.bad{background:rgba(229,62,62,.12);border:1px solid rgba(229,62,62,.2)}
+.paradox-row.good{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2)}
+.paradox-row-label{color:rgba(255,255,255,.55);font-weight:500}
+.paradox-row-val{font-weight:800;font-size:clamp(15px,1.8vw,20px)}
+.paradox-row.bad  .paradox-row-val{color:var(--red)}
+.paradox-row.good .paradox-row-val{color:var(--green)}
+.paradox-row-sub{font-size:10px;color:rgba(255,255,255,.3);margin-top:1px}
+.data-source{font-size:var(--fs-small);color:rgba(255,255,255,.3);margin-top:clamp(16px,2vh,22px);font-style:italic}
+
+
+/* ── QUESTION → IMAGE → RESOLUTION BRIDGE ──────────── */
+.bridge-question{
+  min-height:100svh;
+  display:flex;
+  align-items:center;
+  background:transparent;
+  padding:clamp(72px,10vh,120px) 0;
+}
+.bridge-question .container{width:100%}
+.bridge-eyebrow{
+  font-size:var(--fs-small);font-weight:800;letter-spacing:.14em;
+  text-transform:uppercase;color:#FF656A;
+  margin-bottom:clamp(20px,3vh,32px);
+}
+.bridge-headline{
+  max-width:20ch;
+  font-size:clamp(38px,6.5vw,82px);
+  font-weight:780;
+  letter-spacing:-.035em;
+  line-height:1.06;
+  color:var(--white);
+}
+.bridge-headline em{font-style:normal;color:var(--accent)}
+
+.bridge-visual{
+  min-height:100svh;
+  display:flex;
+  align-items:center;
+  padding:0;
+  background:transparent;
+  overflow:hidden;
+}
+.bridge-visual-frame{
+  position:relative;
+  width:100vw;
+  height:100svh;
+  min-height:100svh;
+  margin:0;
+  overflow:hidden;
+  border-radius:0;
+  border:0;
+  box-shadow:none;
+  background:#071217;
+}
+.bridge-visual-frame img{
+  position:absolute;inset:0;
+  display:block;width:100%;height:100%;object-fit:cover;object-position:center;
+}
+.bridge-visual-frame .bridge-reveal{
+  opacity:0;
+  will-change:opacity;
+  transition:opacity .9s cubic-bezier(.22,.61,.36,1);
+}
+.bridge-visual.is-revealed .bridge-reveal{opacity:1}
+@media(max-width:620px){
+  .bridge-visual-frame{height:100svh;min-height:100svh}
+  .bridge-visual-frame img{object-position:center}
+}
+
+/* Scene resolution */
+.scene-transition{
+  min-height:100svh;
+  display:flex;
+  align-items:center;
+  padding:clamp(64px,9vh,108px) 0;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 1.2s ease, transform 1.2s ease;
+}
+.transition-bg{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;
+  z-index:0;
+}
+.scene-transition::after{
+  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(8,30,45,.14),rgba(12,42,53,.08));
+}
+.scene-transition.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+
+
+
+
+
+.placeholder-headline em{font-style:normal;color:#1C404D}
+
+
+/* ── 4. ROOT CAUSE ─────────────────────────────── */
+.rootcause{
+  background:transparent;
+  padding:clamp(56px,7.5vh,96px) 0;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.rootcause::after{
+  content:'';position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse 50% 80% at 50% 50%,rgba(221,255,142,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.rc-label{font-size:var(--fs-small);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:clamp(20px,3vh,32px)}
+.rc-word{
+  font-size:clamp(64px,14vw,160px);
+  font-weight:900;
+  letter-spacing:-.04em;
+  line-height:.9;
+  color:transparent;
+  -webkit-text-stroke:1.5px rgba(221,255,142,.5);
+  text-stroke:1.5px rgba(221,255,142,.5);
+  position:relative;z-index:1;
+  margin-bottom:clamp(20px,3vh,36px);
+}
+.rc-diagnosis{
+  font-size:var(--fs-h3);
+  font-weight:700;
+  color:var(--white);
+  max-width:44ch;
+  margin:0 auto clamp(12px,1.8vh,20px);
+  line-height:1.35;
+  position:relative;z-index:1;
+}
+.rc-diagnosis em{font-style:normal;color:var(--accent)}
+.rc-body{
+  font-size:var(--fs-body);
+  color:rgba(255,255,255,.4);
+  max-width:54ch;
+  margin:0 auto;
+  line-height:1.7;
+  position:relative;z-index:1;
+}
+.rc-quote{
+  margin:clamp(28px,4vh,44px) auto 0;
+  max-width:52ch;
+  padding:clamp(16px,2.5vw,24px) clamp(20px,3vw,32px);
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-left:3px solid var(--accent);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  text-align:left;
+  position:relative;z-index:1;
+}
+.rc-quote p{font-size:var(--fs-body);color:rgba(255,255,255,.6);line-height:1.65;font-style:italic}
+.rc-quote cite{display:block;font-size:var(--fs-small);color:rgba(255,255,255,.3);margin-top:10px;font-style:normal}
+
+/* ── 5. SOLUTION ───────────────────────────────── */
+.solution{
+  background: transparent;
+  padding:clamp(52px,7vh,88px) 0;
+  border-bottom:none;
+}
+.sol-label{font-size:var(--fs-small);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#1C404D;margin-bottom:8px}
+.sol-headline{font-size:var(--fs-h2);font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:clamp(10px,1.5vh,16px);color:var(--ink)}
+.sol-headline em{font-style:normal;color:#1C404D}
+.sol-sub{font-size:var(--fs-body);color:var(--ink-2);max-width:60ch;margin-bottom:clamp(32px,4.5vh,52px);line-height:1.7}
+
+/* Pipeline */
+.pipeline{
+  background:#fff;
+  border:1px solid rgba(28,64,77,.12);
+  box-shadow:0 4px 20px rgba(28,64,77,.06);
+  border-radius:var(--radius);
+  padding:clamp(24px,3.5vw,36px);
+  margin-bottom:clamp(24px,3.5vh,40px);
+  position:relative;overflow:hidden;
+}
+.pipeline::before{
+  content:'CONTEXT';
+  position:absolute;
+  top:clamp(16px,2.5vw,22px);
+  left:0;
+  font-size:10px;font-weight:900;letter-spacing:.14em;
+  color:#fff;
+  background:linear-gradient(90deg,#E5484D 0 49.5%,#2878E5 50.5% 100%);
+  padding:6px 16px;
+  border-radius:99px;
+  border:1.5px solid rgba(255,255,255,.9);
+  box-shadow:0 5px 14px rgba(19,45,77,.22),inset 0 1px 1px rgba(255,255,255,.35);
+  text-shadow:0 1px 2px rgba(0,0,0,.3);
+  animation:ctx-travel 4s ease-in-out infinite;
+  white-space:nowrap;
+  z-index:2;
+}
+@keyframes ctx-travel{
+  0%  {left:2%;opacity:0}
+  8%  {opacity:1}
+  88% {opacity:1}
+  100%{left:86%;opacity:0}
+}
+/* Portrait: CONTEXT capsule travels top → bottom */
+@keyframes ctx-travel-v{
+  0%  {top:5%;opacity:0;transform:translateX(-50%)}
+  8%  {opacity:1;transform:translateX(-50%)}
+  88% {opacity:1;transform:translateX(-50%)}
+  100%{top:82%;opacity:0;transform:translateX(-50%)}
+}
+.pipe-steps{
+  display:grid;
+  grid-template-columns:1fr auto 1fr auto 1fr auto 1fr auto 1fr;
+  align-items:center;
+  gap:0;
+  padding-top:clamp(28px,4vw,40px);
+}
+@media(max-width:600px){
+  .pipe-steps{grid-template-columns:1fr 1fr;gap:clamp(12px,2vw,18px)}
+  .pipe-arr{display:none}
+}
+@media (max-width: 600px) {
+  /* Context badge: portrait → vertical travel, centered */
+  .pipeline::before {
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 99px;
+    border: 1.5px solid rgba(255,255,255,.9);
+    animation: ctx-travel-v 4s ease-in-out infinite;
+  }
+}
+
+.pipe-step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 4px}
+.pipe-dot{
+  width:clamp(48px,5.5vw,58px);height:clamp(48px,5.5vw,58px);
+  border-radius:clamp(13px,1.6vw,17px);
+  background:#1C404D;
+  border:2px solid #fff;
+  outline:1px solid rgba(28,64,77,.22);
+  box-shadow:0 7px 16px rgba(28,64,77,.2),inset 0 1px 0 rgba(255,255,255,.16);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:10px;flex-shrink:0;
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+.pipe-step:hover .pipe-dot{transform:translateY(-3px);box-shadow:0 10px 22px rgba(28,64,77,.24),inset 0 1px 0 rgba(255,255,255,.18)}
+.pipe-dot svg{color:#fff;width:25px;height:25px}
+.pipe-dot svg path,.pipe-dot svg rect,.pipe-dot svg circle,.pipe-dot svg ellipse{stroke-width:1.8}
+.pipe-step:nth-child(3) .pipe-dot{
+  background:#D8FF78;
+  outline-color:rgba(123,158,36,.42);
+  box-shadow:0 7px 16px rgba(113,145,33,.2),inset 0 1px 0 rgba(255,255,255,.65);
+}
+.pipe-step:nth-child(3) .pipe-dot svg{color:#1C404D}
+.pipe-step:nth-child(7) .pipe-dot{
+  background:#2878E5;
+  outline-color:rgba(40,120,229,.38);
+  box-shadow:0 7px 18px rgba(40,120,229,.25),inset 0 1px 0 rgba(255,255,255,.2);
+}
+.pipe-step:nth-child(9) .pipe-dot{
+  background:#0FAE78;
+  outline-color:rgba(15,174,120,.38);
+  box-shadow:0 7px 18px rgba(15,174,120,.24),inset 0 1px 0 rgba(255,255,255,.2);
+}
+.pipe-step-label{font-size:var(--fs-small);font-weight:600;color:var(--ink);line-height:1.3}
+.pipe-step-hint{font-size:10px;color:var(--ink-3);margin-top:3px;line-height:1.3}
+.pipe-arr{display:flex;align-items:flex-start;padding-top:clamp(19px,2.4vw,25px)}
+.pipe-arr svg{color:rgba(28,64,77,.38)}
+/* Reviewer step highlight */
+.pipe-dot-reviewer{
+  background:#2878E5 !important;
+  border-color:#fff !important;
+  outline-color:rgba(40,120,229,.38) !important;
+  box-shadow:0 7px 18px rgba(40,120,229,.25),inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
+.pipe-step-label-reviewer{color:#1C404D !important;font-weight:800;}
+.reviewer-hint{color:#1C404D !important;opacity:.9;font-style:italic;}
+
+.pipe-step-reviewer .pipe-step-label{
+   color:#1C404D;
+  font-weight:800;
+}
+.reviewer-hint{
+   color:#1C404D !important;
+  opacity:.85;
+  font-style:italic;
+}
+
+
+/* Feature cards */
+/* Features — standalone rows */
+.features-standalone{
+  margin-top:clamp(40px,5.5vh,64px);
+  display:flex;flex-direction:column;gap:clamp(16px,2.5vh,24px);
+}
+.features-label{
+  font-size:var(--fs-small);font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:#1C404D;
+  margin-bottom:clamp(4px,1vh,8px);
+}
+.feature-row{
+  display:grid;
+  grid-template-columns:clamp(44px,5.5vw,56px) 1fr auto;
+  gap:clamp(14px,2vw,20px);
+  align-items:center;
+  padding:clamp(18px,2.5vw,28px);
+  background:var(--white);
+  border:1px solid var(--rule);
+  border-radius:var(--radius);
+  box-shadow:0 2px 8px rgba(0,0,0,.04);
+  transition:border-color .2s,box-shadow .2s;
+}
+.feature-row:hover{
+  border-color:#1C404D;
+  box-shadow:0 6px 20px rgba(28,64,77,.08);
+}
+@media(max-width:520px){
+  .feature-row{grid-template-columns:clamp(40px,10vw,48px) 1fr;gap:12px}
+  .fr-tag{grid-column:1/-1}
+}
+.fr-icon{
+  width:clamp(44px,5.5vw,56px);height:clamp(44px,5.5vw,56px);
+  background:rgba(28,64,77,.06);
+  border-radius:var(--radius-sm);
+  border:1px solid rgba(28,64,77,.12);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.fr-icon svg{color:#1C404D;width:22px;height:22px}
+.fr-body h3{
+  font-size:var(--fs-body);font-weight:700;color:var(--ink);
+  margin-bottom:4px;line-height:1.3;
+}
+.fr-body p{
+  font-size:var(--fs-small);color:var(--ink-3);line-height:1.55;
+  max-width:52ch;
+}
+.fr-tag{
+  font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:#fff;background:#1C404D;
+  padding:5px 12px;border-radius:99px;
+  white-space:nowrap;align-self:center;
+}
+
+/* ── 6. TRUST ──────────────────────────────────── */
+.trust{
+  padding:clamp(36px,5vh,52px) 0;
+  border-bottom:none;
+  background:transparent;
+}
+.trust-inner{display:flex;align-items:flex-start;gap:clamp(16px,2.5vw,28px);flex-wrap:wrap}
+.trust-badge{
+  flex-shrink:0;
+  background:#1C404D;color:#fff;
+  border-radius:var(--radius);padding:10px 16px;
+  font-size:var(--fs-small);font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  line-height:1.3;text-align:center;min-width:72px;
+}
+.trust-text h3{font-size:var(--fs-h3);font-weight:700;margin-bottom:6px}
+.trust-text p{font-size:var(--fs-body);color:var(--ink-2);max-width:60ch;line-height:1.65}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:var(--fs-small);font-weight:600;
+  padding:5px 10px;border-radius:99px;
+  background:rgba(28,64,77,.06);color:#1C404D;
+  border:1px solid rgba(28,64,77,.15);
+}
+.chip svg{flex-shrink:0}
+
+/* ── 7. CTA ────────────────────────────────────── */
+
+
+
+
+
+.btn-p{
+  display:inline-flex;align-items:center;gap:7px;
+  background:#1C404D;color:#fff;
+  font-size:var(--fs-body);font-weight:600;
+  padding:clamp(12px,1.8vh,16px) clamp(22px,3vw,32px);
+  border-radius:var(--radius-sm);text-decoration:none;
+  transition:background .15s;
+}
+.btn-p:hover{background:#152E38}
+.btn-s{
+  display:inline-flex;align-items:center;gap:7px;
+  color:#1C404D;
+  font-size:var(--fs-body);font-weight:500;
+  padding:clamp(12px,1.8vh,16px) clamp(22px,3vw,32px);
+  border-radius:var(--radius-sm);text-decoration:none;
+  border:1px solid rgba(28,64,77,.15);
+  transition:border-color .15s,color .15s;
+}
+.btn-s:hover{border-color:#1C404D;color:#fff;background:#1C404D}
+
+/* footer */
+.footer{background:transparent;padding:clamp(14px,2vh,22px) 0;border-top:1px solid rgba(255,255,255,.06)}
+.footer-inner{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;font-size:var(--fs-small);color:var(--ink-3)}
+.footer-logo{font-weight:700;color:var(--ink);font-size:14px;letter-spacing:-.01em}
+
+/* ── SITE LOGO ──────────────────────────────────── */
+.site-logo{
+  position:fixed;
+  top:clamp(14px,2.5vh,22px);
+  left:clamp(16px,3vw,32px);
+  z-index:100;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  text-decoration:none;
+  opacity:1;
+  transition:opacity .2s;
+  background:rgba(13,26,30,0.55);
+  -webkit-backdrop-filter:blur(10px);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:99px;
+  padding:5px 14px 5px 5px;
+}
+.site-logo:hover{opacity:.88}
+.site-logo-mark{
+  width:30px;height:30px;
+  border-radius:8px;
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.site-logo-wordmark{
+  font-size:15px;font-weight:800;letter-spacing:-.02em;
+  color:#fff;
+}
+
+
+/* ── Transition Text ────────────────────────── */
+.transition-text{max-width:980px;margin:0 auto}
+.transition-eyebrow{
+  font-size:clamp(10px,.9vw,12px);font-weight:800;letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(255,255,255,.82);
+  margin-bottom:clamp(22px,3vh,34px);
+  text-shadow:0 2px 10px rgba(9,31,45,.28);
+}
+.transition-headline{
+  font-size:clamp(50px,8.5vw,112px);font-weight:850;letter-spacing:-.055em;
+  line-height:.98;color:#fff;
+  margin:0 auto clamp(28px,4vh,44px);
+  max-width:12ch;
+  text-shadow:0 4px 24px rgba(7,30,45,.32);
+}
+.transition-headline em{
+  font-style:normal;color:#1C404D;
+  display:inline-block;
+  background:linear-gradient(transparent 72%,rgba(221,255,142,.7) 72%);
+  text-shadow:none;
+}
+.transition-sub{
+  font-size:clamp(13px,1.25vw,17px);color:rgba(255,255,255,.9);
+  line-height:1.65;max-width:60ch;margin:0 auto;
+  text-shadow:0 2px 12px rgba(7,30,45,.38);
+}
+
+/* ── CTA Hero + Glass ───────────────────────── */
+.cta-hero{
+  position:relative;
+  overflow:hidden;
+  min-height:100svh;
+  height:100svh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.cta-bg-img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  z-index:0;
+}
+.cta-glass{
+  position:relative;z-index:2;
+  background:rgba(255,255,255,.32);
+  -webkit-backdrop-filter:blur(30px) saturate(1.35);
+  backdrop-filter:blur(30px) saturate(1.35);
+  border-radius:clamp(16px,2.5vw,24px);
+  border:1px solid rgba(255,255,255,.42);
+  box-shadow:0 8px 48px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.45);
+  padding:clamp(32px,5vw,56px) clamp(28px,4.5vw,48px);
+  margin:clamp(20px,4vw,48px);
+  max-width:580px;
+  text-align:center;
+  opacity:0;
+  transform:translateY(22px);
+  transition:opacity .9s cubic-bezier(.22,.61,.36,1),transform .9s cubic-bezier(.22,.61,.36,1);
+}
+.cta-hero.visible .cta-glass{opacity:1;transform:none;transition-delay:1s}
+.cta-glass h2{
+  font-size:var(--fs-h2);font-weight:700;letter-spacing:-.02em;line-height:1.2;
+  color:var(--ink);margin-bottom:clamp(10px,1.5vh,14px);
+}
+.cta-glass h2 em{font-style:normal;color:#1C404D}
+.cta-glass p{
+  font-size:var(--fs-body);color:var(--ink-2);
+  margin-bottom:clamp(22px,3vh,32px);line-height:1.65;
+}
+.cta-glass .cta-btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.btn-s-glass{
+  display:inline-flex;align-items:center;gap:7px;
+  color:#1C404D;font-size:var(--fs-body);font-weight:600;
+  padding:clamp(12px,1.8vh,16px) clamp(22px,3vw,32px);
+  border-radius:var(--radius-sm);text-decoration:none;
+  border:1.5px solid #1C404D;
+  transition:background .15s,color .15s;
+}
+.btn-s-glass:hover{background:#1C404D;color:#fff}
+
+</style>
+</head>
+<body>
+
+<div id="bg-layer" style="position:fixed;inset:0;z-index:-1;background:rgb(13,26,30);will-change:background-color"></div>
+
+<!-- ── SITE LOGO ── -->
+<a class="site-logo" href="https://calendly.com/peter-han-langgenius/30min" target="_blank" rel="noopener" aria-label="Book a Demo">
+  <span class="site-logo-mark"><img src="syncless-logo.svg" width="30" height="30" alt="Syncless" style="display:block;border-radius:8px;"/></span>
+  <span class="site-logo-wordmark">Book a Demo</span>
+</a>
+
+<nav id="page-nav" class="page-nav" aria-label="Page navigation"></nav>
+
+<!-- ── 1. HOOK ── -->
+<section class="hook">
+  <div class="container">
+    <div class="hook-label">For engineering leads at AI-native teams</div>
+    <h1>Are you<br><em>suffering?</em></h1>
+    <div class="hook-response">
+      <p class="hook-aside">Not personally.</p>
+      <p class="hook-team">Your team.</p>
+      <p class="hook-setup">You adopted every AI tool on the market.</p>
+      <p class="hook-payoff">Output went up.<br>Alignment got worse.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 2. THREE QUESTIONS ── -->
+<section class="questions">
+  <div class="container">
+    <p class="q-label">You explained it. They fed it to a coding agent. You're still cleaning up.</p>
+    <ul class="q-list">
+      <li class="q-item">
+        <span class="q-num">01</span>
+        <p class="q-text">You laid it out clearly. The goal, the constraints, what good looks like.<br>They nodded. Then they opened their coding agent.</p>
+      </li>
+      <li class="q-item">
+        <span class="q-num">02</span>
+        <p class="q-text">The PR came back three days later.<br>It compiled. It passed CI. <em>It wasn't what you meant at all.</em></p>
+      </li>
+      <li class="q-item">
+        <span class="q-num">03</span>
+        <p class="q-text">You spent the next week in review comments trying to explain<br>what you should have only had to say once.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── 3. DATA ── -->
+<section class="data">
+  <div class="container">
+    <div class="data-header">
+      <p class="data-label">The numbers behind the discomfort</p>
+      <h2 class="data-headline">You are not imagining it. The data is brutal.</h2>
+      <p class="data-sub">A five-country survey of 247 managers. What the hours actually add up to.</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat red">
+        <div class="stat-num">16.5 <span class="stat-unit">hrs/week</span></div>
+        <div class="stat-what">Coordination overhead per manager</div>
+        <div class="stat-desc">Status updates, re-explaining context, searching for decisions already made — <strong>2 full working days, every week.</strong></div>
+      </div>
+      <div class="stat red">
+        <div class="stat-num">$64,600 <span class="stat-unit">/year</span></div>
+        <div class="stat-what">Wasted cost per manager</div>
+        <div class="stat-desc">760 hours × $85/hr loaded cost. A team of 8 managers = <strong>$517,000 burned annually</strong> on reconciliation.</div>
+      </div>
+      <div class="stat amber">
+        <div class="stat-num">2× <span class="stat-unit">blind spot</span></div>
+        <div class="stat-what">They can't see their own overhead</div>
+        <div class="stat-desc">Managers self-report losing <strong>21%</strong> of their week. Their own itemized hours add up to <strong>41%</strong>. The tax is invisible to the people paying it.</div>
+      </div>
+    </div>
+
+    <!-- The AI Paradox Card -->
+    <div class="paradox-card">
+      <div class="paradox-left">
+        <div class="paradox-eyebrow">The AI paradox</div>
+        <h3 class="paradox-headline">You adopted AI.<br>The overhead doubled.</h3>
+        <p class="paradox-body">86% of managers already use AI at work. The heaviest daily users carry more than twice the coordination load of non-users. AI made you faster at producing more material for everyone else to reconcile.</p>
+        <p class="paradox-body" style="margin-top:10px;color:rgba(255,255,255,.3);font-size:11px">Coordination Tax Index 2026 · In Parallel · 247 managers, 5 countries</p>
+      </div>
+      <div class="paradox-right">
+        <div class="paradox-row bad">
+          <div>
+            <div class="paradox-row-label">Daily AI users</div>
+            <div class="paradox-row-sub">31% of managers</div>
+          </div>
+          <div class="paradox-row-val">20.3 hrs/wk</div>
+        </div>
+        <div class="paradox-row bad">
+          <div>
+            <div class="paradox-row-label">Occasional AI users</div>
+            <div class="paradox-row-sub">19% of managers</div>
+          </div>
+          <div class="paradox-row-val">13.1 hrs/wk</div>
+        </div>
+        <div class="paradox-row good">
+          <div>
+            <div class="paradox-row-label">Don't use AI</div>
+            <div class="paradox-row-sub">14% of managers</div>
+          </div>
+          <div class="paradox-row-val">9.1 hrs/wk</div>
+        </div>
+      </div>
+    </div>
+    <p class="data-source">Also: 91% of AI users reload context manually every session. Only 9% say their assistant "usually knows enough." — same study.</p>
+  </div>
+</section>
+
+<!-- ── AI CHAOS VISUAL ── -->
+<section class="chaos-visual" aria-label="The coordination chaos created by disconnected AI tools">
+  <figure class="chaos-frame">
+    <img src="syncless-ai-chaos.webp" alt="A chaotic cyberpunk team meal surrounded by disconnected computers and tangled cables" loading="eager">
+    <figcaption class="chaos-caption">
+      <strong>More output.<br>More to reconcile.</strong>
+      <span>AI accelerated every individual — while the team kept passing context by hand.</span>
+    </figcaption>
+  </figure>
+</section>
+
+
+<!-- ── 4. ROOT CAUSE ── -->
+<section class="rootcause">
+  <div class="container">
+    <p class="rc-label">Root cause diagnosis</p>
+    <div class="rc-word">CONTEXT</div>
+    <h2 class="rc-diagnosis">The bottleneck was never speed.<br>It's <em>context that never traveled.</em></h2>
+    <p class="rc-body">Every meeting, every PR, every decision — the reasoning behind it stays in someone's head. The next person starts from scratch. AI made output faster; it made this gap <strong style="color:rgba(255,255,255,.7)">worse</strong>, not better. A faster engine on a stale map.</p>
+    <div class="rc-quote">
+      <p>"The AI cannot reduce coordination overhead because the coordination layer is exactly the part of the organisation it cannot see."</p>
+      <cite>— Coordination Tax Index 2026 · In Parallel</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ── QUESTION BRIDGE ── -->
+<section class="bridge-question">
+  <div class="container">
+    <p class="bridge-eyebrow">So, how do we fix it?</p>
+    <h2 class="bridge-headline">How does context move with the work —<br><em>instead of getting lost between people?</em></h2>
+  </div>
+</section>
+
+<!-- ── CONTEXT BRIDGE VISUAL ── -->
+<section class="bridge-visual" aria-label="Syncless keeps context moving with the work">
+  <figure class="bridge-visual-frame">
+    <img class="bridge-base" src="syncless-context-bridge-base.webp" alt="Context documents moving between a team around a bright center" loading="lazy">
+    <img class="bridge-reveal" src="syncless-context-bridge.webp" alt="The same context converging through Syncless" loading="lazy">
+  </figure>
+</section>
+
+<!-- ── 4. SCROLL TRANSITION · Vibrant Placeholder ── -->
+<section id="scene-transition" class="scene-transition">
+  <img class="transition-bg" src="syncless-context-flows-sky.webp" alt="Open blue sky with warm sunrise clouds" loading="lazy">
+  <div class="container" style="position:relative;z-index:2">
+    <div class="transition-text">
+      <p class="transition-eyebrow">The other side</p>
+      <h2 class="transition-headline">When context flows,<br>people <em>breathe.</em></h2>
+      <p class="transition-sub">No more "can you explain this?" · No more re-briefing rituals · Just the work, and the people.</p>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ── 5. SOLUTION ── -->
+<section class="solution">
+  <div class="container">
+    <p class="sol-label">How Syncless fixes this</p>
+    <h2 class="sol-headline">Context that <em>travels with the task.</em><br>Not trapped in someone's head.</h2>
+    <p class="sol-sub">Syncless is the collaboration layer where agents and humans work the same queue — every task carries the full context of prior decisions, nobody reconstructs from scratch.</p>
+
+    <!-- Pipeline -->
+    <div class="pipeline">
+      <div class="pipe-steps">
+
+        <!-- 1 · Task arrives -->
+        <div class="pipe-step">
+          <div class="pipe-dot">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="2" y="3" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M5 8h6M5 11h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="pipe-step-label">Task<br>arrives</span>
+          <span class="pipe-step-hint">Bug, feature, question</span>
+        </div>
+
+        <div class="pipe-arr"><svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 7h12M10 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+        <!-- 2 · Context attaches -->
+        <div class="pipe-step">
+          <div class="pipe-dot">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M3 9c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="9" cy="9" r="2.5" fill="currentColor"/>
+              <path d="M9 11.5V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="pipe-step-label">Context<br>attaches</span>
+          <span class="pipe-step-hint">Decisions, files, history</span>
+        </div>
+
+        <div class="pipe-arr"><svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 7h12M10 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+        <!-- 3 · Owner works -->
+        <div class="pipe-step">
+          <div class="pipe-dot">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <circle cx="9" cy="6" r="2.8" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M3 16c0-3 2.686-4.5 6-4.5s6 1.5 6 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M13.5 5.5l1.2 1.2L17 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="pipe-step-label">Owner<br>works</span>
+          <span class="pipe-step-hint">Full context, no re-brief</span>
+        </div>
+
+        <div class="pipe-arr"><svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 7h12M10 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+        <!-- 4 · Reviewer — highlighted: same context, zero handoff -->
+        <div class="pipe-step">
+          <div class="pipe-dot pipe-dot-reviewer">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <ellipse cx="9" cy="9" rx="7" ry="4.5" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="9" cy="9" r="2.2" fill="currentColor"/>
+              <circle cx="9" cy="9" r="1" fill="#1C404D"/>
+            </svg>
+          </div>
+          <span class="pipe-step-label pipe-step-label-reviewer">Reviewer<br>sees</span>
+          <span class="pipe-step-hint reviewer-hint">Same context —<br>no "explain this PR"</span>
+        </div>
+
+        <div class="pipe-arr"><svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 7h12M10 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+        <!-- 5 · Done -->
+        <div class="pipe-step">
+          <div class="pipe-dot">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M5.5 9l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="pipe-step-label">Done —<br>no handoff</span>
+          <span class="pipe-step-hint">Zero follow-up DMs</span>
+        </div>
+
+      </div>
+
+    <!-- Features — 独立区块 -->
+    <div class="features-standalone">
+      <p class="features-label">Three things Syncless gives your team</p>
+
+      <div class="feature-row">
+        <div class="fr-icon"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3v4M11 15v4M3 11h4M15 11h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="11" cy="11" r="3" fill="currentColor"/></svg></div>
+        <div class="fr-body">
+          <h3>Automatic routing</h3>
+          <p>Task arrives. The pipeline decides — routes to the right owner with every prior decision attached.</p>
+        </div>
+        <span class="fr-tag">No manual handoff</span>
+      </div>
+
+      <div class="feature-row">
+        <div class="fr-icon"><svg viewBox="0 0 22 22" fill="none"><rect x="2" y="5" width="18" height="13" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M6 10h7M6 13.5h4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="17" cy="5" r="3" fill="currentColor"/></svg></div>
+        <div class="fr-body">
+          <h3>Shared context</h3>
+          <p>Agents and humans see the same prior decisions, files, and the exact next question — nobody starts from zero.</p>
+        </div>
+        <span class="fr-tag">Full history attached</span>
+      </div>
+
+      <div class="feature-row">
+        <div class="fr-icon"><svg viewBox="0 0 22 22" fill="none"><path d="M4 6h14M4 11h10M4 16h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="17" cy="11" r="2.5" fill="currentColor"/></svg></div>
+        <div class="fr-body">
+          <h3>Explicit pipelines</h3>
+          <p>Turn your team's implicit SOPs into reusable, context-aware templates anyone can start.</p>
+        </div>
+        <span class="fr-tag">Reusable templates</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── 6. TRUST ── -->
+<section class="trust">
+  <div class="container">
+    <div class="trust-inner">
+      <div class="trust-badge">Your<br>creds.<br>Your<br>agent.</div>
+      <div class="trust-text">
+        <h3>Agents have no identity of their own — they work as you.</h3>
+        <p>Syncless agents don't carry a separate Syncless-owned identity. They run using the credentials already on your device — no third-party account observing your team, no data leaving through a foreign identity, and nothing that could become a surveillance layer. The agent acts as you, with your permissions, inside your toolchain.</p>
+        <div class="chips">
+          <span class="chip"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5L4.5 9L10 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>No separate agent identity</span>
+          <span class="chip"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5L4.5 9L10 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Uses your device credentials</span>
+          <span class="chip"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5L4.5 9L10 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>No Syncless-owned data pipeline</span>
+          <span class="chip"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5L4.5 9L10 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Zero workflow changes required</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 7. CTA + Happy Ending Image ── -->
+<section class="cta-hero">
+  <img class="cta-bg-img" src="syncless-cta-bg.webp" alt="Team sharing a meal in green field">
+  <div class="cta-glass">
+    <h2>Stop rebuilding context.<br><em>Let it travel with the work.</em></h2>
+    <p>Connect your team to Syncless. 30 min and the gap becomes visible — and fixable.</p>
+    <div class="cta-btns">
+      <a class="btn-p" href="https://www.syncless.ai" target="_blank" rel="noopener">
+        Start free — syncless.ai
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="btn-s-glass" href="https://calendly.com/peter-han-langgenius/30min" target="_blank" rel="noopener">
+        Book a 30 min demo
+      </a>
+      <a class="btn-s-glass" href="https://discord.gg/e6GFYWFKA" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8.4 8.4 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a8.9 8.9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8.3 8.3 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612" fill="currentColor"/></svg>
+        Join Discord
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-logo">Syncless</span>
+      <span>Agent Collaboration Platform · LangGenius, Inc.</span>
+      <span>syncless.ai · 2026</span>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+(function(){
+  var bg = document.getElementById('bg-layer');
+
+  /* ── 色彩锚点：section 选择器 + 目标 RGB ───────────────
+     dark black → dark navy → dark → forest → deep teal → brand teal → dark end
+  ─────────────────────────────────────────────────────── */
+  var STOPS = [
+    { sel: '.hook',              rgb: [13,  26,  30 ] },  // #0D1A1E  近黑
+    { sel: '.questions',        rgb: [17,  24,  32 ] },  // #111820  深暗蓝
+    { sel: '.data',              rgb: [13,  22,  26 ] },  // 稍深
+    { sel: '.rootcause',        rgb: [15,  30,  26 ] },  // 暗森林绿
+    { sel: '.bridge-question',  rgb: [11,  22,  27 ] },  // 深色提问页
+    { sel: '.bridge-visual',    rgb: [9,   18,  22 ] },  // 深色视觉页
+    { sel: '#scene-transition', rgb: [200, 230, 210] },  // 渐变到亮绿 — 转折点
+    { sel: '.solution',         rgb: [245, 250, 247] },  // #F5FAF7 明快浅绿
+    { sel: '.trust',            rgb: [255, 255, 255] },  // 纯白
+    { sel: '.cta',              rgb: [245, 250, 247] },  // 保持亮
+    { sel: '.footer',           rgb: [28,  64,  77 ] },  // #1C404D 品牌青尾
+  ];
+
+  function lerp(a,b,t){ return a+(b-a)*t; }
+  function ease(t){ return t<.5?2*t*t:-1+(4-2*t)*t; }
+
+  /* 缓存锚点 Y 坐标（resize 时重算） */
+  var positions = null;
+  function buildPositions(){
+    positions = STOPS.map(function(s){
+      var el = document.querySelector(s.sel);
+      if(!el) return null;
+      var r = el.getBoundingClientRect();
+      return { y: r.top + window.scrollY + r.height*0.25, rgb: s.rgb };
+    }).filter(Boolean);
+  }
+
+  function applyColor(){
+    if(!positions) buildPositions();
+    if(!positions || !positions.length) return;
+
+    /* 用视口中心点确定当前位置 */
+    var cy = window.scrollY + window.innerHeight * 0.45;
+
+    var lo = positions[0];
+    var hi = positions[positions.length-1];
+    for(var i=0; i<positions.length-1; i++){
+      if(cy >= positions[i].y && cy < positions[i+1].y){
+        lo = positions[i]; hi = positions[i+1]; break;
+      }
+    }
+    var span = hi.y - lo.y;
+    var t = ease(span===0?0:Math.max(0,Math.min(1,(cy-lo.y)/span)));
+
+    var r = Math.round(lerp(lo.rgb[0],hi.rgb[0],t));
+    var g = Math.round(lerp(lo.rgb[1],hi.rgb[1],t));
+    var b = Math.round(lerp(lo.rgb[2],hi.rgb[2],t));
+
+    if(bg) bg.style.backgroundColor = 'rgb('+r+','+g+','+b+')';
+  }
+
+  /* Intersection Observer: 占位 section 淡入 */
+  var trans = document.getElementById('scene-transition');
+  if(trans){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting) trans.classList.add('visible'); });
+    },{ threshold:0.12 });
+    io.observe(trans);
+  }
+
+  /* Final CTA pauses for one second, then reveals its content */
+  var ctaHero = document.querySelector('.cta-hero');
+  if(ctaHero){
+    var ctaObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting) ctaHero.classList.add('visible');});
+    },{threshold:0.35});
+    ctaObserver.observe(ctaHero);
+  }
+
+  /* One gesture = one page. The bridge image consumes an extra gesture to reveal. */
+  var bridgeSection = document.querySelector('.bridge-visual');
+  var bridgeReveal = document.querySelector('.bridge-reveal');
+  var pages = Array.prototype.slice.call(document.querySelectorAll('body > section'));
+  var pageNav = document.getElementById('page-nav');
+  var navButtons = [];
+  var pageMeta = [
+    {title:'Are you suffering?'},
+    {title:'They fed it to a coding agent'},
+    {title:'The data is brutal'},
+    {title:'More output. More to reconcile.',image:'syncless-ai-chaos.webp'},
+    {title:'Root cause: context'},
+    {title:'How does context move?'},
+    {title:'Context converges through Syncless',image:'syncless-context-bridge-base.webp'},
+    {title:'When context flows, people breathe.',image:'syncless-context-flows-sky.webp'},
+    {title:'Context travels with the task',light:true},
+    {title:'Your creds. Your agent.',light:true},
+    {title:'Let it travel with the work.',cta:true}
+  ];
+  var pageLockedUntil = 0;
+  var revealAnimating = false;
+  var wheelGestureActive = false;
+  var wheelQuietTimer = null;
+
+  if(pageNav){
+    pages.forEach(function(page,index){
+      var meta = pageMeta[index] || {title:'Page '+(index+1)};
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.setAttribute('aria-label','Go to page '+(index+1)+': '+meta.title);
+
+      var thumb = document.createElement('span');
+      thumb.className = 'page-thumb'+((meta.image||meta.cta)?' image':'')+(meta.light?' light':'');
+      if(meta.image) thumb.style.backgroundImage = 'url("'+meta.image+'")';
+      if(meta.cta){
+        var ctaImage = document.querySelector('.cta-bg-img');
+        if(ctaImage) thumb.style.backgroundImage = 'url("'+ctaImage.src+'")';
+      }
+
+      var copy = document.createElement('span');
+      copy.className = 'page-thumb-copy';
+      var num = document.createElement('span');
+      num.className = 'page-thumb-num';
+      num.textContent = String(index+1).padStart(2,'0')+' / '+String(pages.length).padStart(2,'0');
+      var title = document.createElement('span');
+      title.className = 'page-thumb-title';
+      title.textContent = meta.title;
+      copy.appendChild(num);copy.appendChild(title);thumb.appendChild(copy);button.appendChild(thumb);
+
+      button.addEventListener('click',function(){
+        if(page === bridgeSection) bridgeSection.classList.remove('is-revealed');
+        pageLockedUntil = Date.now()+900;
+        page.scrollIntoView({behavior:'smooth',block:'start'});
+      });
+      pageNav.appendChild(button);navButtons.push(button);
+    });
+  }
+
+  function updatePageNav(){
+    if(!navButtons.length) return;
+    var active = nearestPageIndex();
+    navButtons.forEach(function(button,index){
+      button.classList.toggle('active',index===active);
+      if(index===active) button.setAttribute('aria-current','page');
+      else button.removeAttribute('aria-current');
+    });
+  }
+
+  function animateBridgeReveal(show){
+    if(!bridgeSection || !bridgeReveal || revealAnimating) return;
+    revealAnimating = true;
+
+    var finished = false;
+    function releaseRevealLock(){
+      if(finished) return;
+      finished = true;
+      revealAnimating = false;
+      pageLockedUntil = Date.now() + 100;
+    }
+
+    bridgeReveal.addEventListener('transitionend',releaseRevealLock,{once:true});
+    bridgeSection.classList.toggle('is-revealed',show);
+    window.setTimeout(releaseRevealLock,1200);
+  }
+
+  function nearestPageIndex(){
+    var best = 0;
+    var distance = Infinity;
+    pages.forEach(function(page,index){
+      var d = Math.abs(page.getBoundingClientRect().top);
+      if(d < distance){distance=d;best=index;}
+    });
+    return best;
+  }
+
+  function turnPage(direction){
+    var currentIndex = nearestPageIndex();
+    var current = pages[currentIndex];
+
+    if(current === bridgeSection){
+      if(direction > 0 && !bridgeSection.classList.contains('is-revealed')){
+        animateBridgeReveal(true);
+        return;
+      }
+      if(direction < 0 && bridgeSection.classList.contains('is-revealed')){
+        animateBridgeReveal(false);
+        return;
+      }
+    }
+
+    var nextIndex = Math.max(0,Math.min(pages.length-1,currentIndex+direction));
+    if(nextIndex === currentIndex) return;
+    var next = pages[nextIndex];
+    if(next === bridgeSection){
+      bridgeSection.classList.toggle('is-revealed',direction < 0);
+    }
+    next.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  /* ── Wheel ── */
+  window.addEventListener('wheel',function(event){
+    if(event.ctrlKey) return;
+    event.preventDefault();
+    window.clearTimeout(wheelQuietTimer);
+    wheelQuietTimer = window.setTimeout(function(){wheelGestureActive=false;},120);
+    if(Math.abs(event.deltaY) < 6) return;
+    if(revealAnimating || wheelGestureActive) return;
+    wheelGestureActive = true;
+    var now = Date.now();
+    if(now < pageLockedUntil) return;
+    pageLockedUntil = now + 680;
+    turnPage(event.deltaY > 0 ? 1 : -1);
+  },{passive:false});
+
+  /* ── Touch swipe ── */
+  var touchStartY = 0;
+  var touchStartX = 0;
+  window.addEventListener('touchstart',function(event){
+    touchStartY = event.touches[0].clientY;
+    touchStartX = event.touches[0].clientX;
+  },{passive:true});
+  window.addEventListener('touchend',function(event){
+    var dy = touchStartY - event.changedTouches[0].clientY;
+    var dx = touchStartX - event.changedTouches[0].clientX;
+    if(Math.abs(dy) < 40 || Math.abs(dy) < Math.abs(dx)) return;
+    var now = Date.now();
+    if(revealAnimating || now < pageLockedUntil) return;
+    pageLockedUntil = now + 680;
+    turnPage(dy > 0 ? 1 : -1);
+  },{passive:true});
+  window.addEventListener('touchmove',function(event){
+    if(revealAnimating) event.preventDefault();
+  },{passive:false});
+
+  window.addEventListener('keydown',function(event){
+    var tag = event.target && event.target.tagName;
+    if(tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+    var direction = 0;
+    if(event.key === 'ArrowDown' || event.key === 'PageDown' || (event.key === ' ' && !event.shiftKey)) direction = 1;
+    if(event.key === 'ArrowUp' || event.key === 'PageUp' || (event.key === ' ' && event.shiftKey)) direction = -1;
+    if(!direction) return;
+    event.preventDefault();
+    if(revealAnimating) return;
+    turnPage(direction);
+  });
+
+  window.addEventListener('scroll',function(){applyColor();updatePageNav();},{passive:true});
+  window.addEventListener('resize',function(){positions=null;applyColor();updatePageNav();},{passive:true});
+  applyColor(); // 初始化
+  updatePageNav();
+})();
+</script>
+</body>
+</html>
