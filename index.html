@@ -517,11 +517,10 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
   margin-bottom:clamp(24px,3.5vh,40px);
   position:relative;overflow:hidden;
 }
-.pipeline::before{
-  content:'CONTEXT';
+.pipeline-path{position:absolute;inset:0;pointer-events:none;z-index:0}
+.pipeline-path path{fill:none;stroke:rgba(28,64,77,.12);stroke-width:2;stroke-dasharray:6 4}
+.ctx-capsule{
   position:absolute;
-  top:clamp(16px,2.5vw,22px);
-  left:0;
   font-size:10px;font-weight:900;letter-spacing:.14em;
   color:#fff;
   background:linear-gradient(90deg,#E5484D 0 49.5%,#2878E5 50.5% 100%);
@@ -530,22 +529,16 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
   border:1.5px solid rgba(255,255,255,.9);
   box-shadow:0 5px 14px rgba(19,45,77,.22),inset 0 1px 1px rgba(255,255,255,.35);
   text-shadow:0 1px 2px rgba(0,0,0,.3);
-  animation:ctx-travel 4s ease-in-out infinite;
   white-space:nowrap;
   z-index:2;
+  offset-rotate:0deg;
+  animation:ctx-along 4s ease-in-out infinite;
 }
-@keyframes ctx-travel{
-  0%  {left:2%;opacity:0}
+@keyframes ctx-along{
+  0%  {offset-distance:0%;opacity:0}
   8%  {opacity:1}
   88% {opacity:1}
-  100%{left:86%;opacity:0}
-}
-/* Portrait: CONTEXT capsule travels top → bottom */
-@keyframes ctx-travel-v{
-  0%  {top:5%;opacity:0;transform:translateX(-50%)}
-  8%  {opacity:1;transform:translateX(-50%)}
-  88% {opacity:1;transform:translateX(-50%)}
-  100%{top:82%;opacity:0;transform:translateX(-50%)}
+  100%{offset-distance:100%;opacity:0}
 }
 .pipe-steps{
   display:grid;
@@ -553,23 +546,12 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
   align-items:center;
   gap:0;
   padding-top:clamp(28px,4vw,40px);
+  position:relative;z-index:1;
 }
 @media(max-width:600px){
   .pipe-steps{grid-template-columns:1fr 1fr;gap:clamp(12px,2vw,18px)}
   .pipe-arr{display:none}
 }
-@media (max-width: 600px) {
-  /* Context badge: portrait → vertical travel, centered */
-  .pipeline::before {
-    top: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 99px;
-    border: 1.5px solid rgba(255,255,255,.9);
-    animation: ctx-travel-v 4s ease-in-out infinite;
-  }
-}
-
 .pipe-step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 4px}
 .pipe-dot{
   width:clamp(48px,5.5vw,58px);height:clamp(48px,5.5vw,58px);
@@ -1032,6 +1014,8 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 
     <!-- Pipeline -->
     <div class="pipeline">
+      <svg class="pipeline-path" id="pipeline-path" aria-hidden="true"><path id="pipe-route" d=""/></svg>
+      <span class="ctx-capsule" id="ctx-capsule">CONTEXT</span>
       <div class="pipe-steps">
 
         <!-- 1 · Task arrives -->
@@ -1116,7 +1100,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
 <section class="features-page">
   <div class="container">
     <div class="features-standalone">
-      <p class="features-label">Three things Syncless gives your team</p>
+      <p class="features-label">What Syncless gives your team</p>
 
       <div class="feature-row">
         <div class="fr-icon"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3v4M11 15v4M3 11h4M15 11h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="11" cy="11" r="3" fill="currentColor"/></svg></div>
@@ -1143,6 +1127,15 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
           <p>Turn your team's implicit SOPs into reusable, context-aware templates anyone can start.</p>
         </div>
         <span class="fr-tag">Reusable templates</span>
+      </div>
+
+      <div class="feature-row">
+        <div class="fr-icon"><svg viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 19h6M11 15v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="11" cy="9" r="2" fill="currentColor"/></svg></div>
+        <div class="fr-body">
+          <h3>Connect your devices</h3>
+          <p>Agent works directly on your browser, MacBook, or server — using your credentials, under your permission. No data leaves through a foreign identity.</p>
+        </div>
+        <span class="fr-tag">Your creds, your agent</span>
       </div>
 
     </div>
@@ -1292,7 +1285,7 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
     {title:'Context converges through Syncless',image:'syncless-context-bridge-base.webp'},
     {title:'When context flows, people breathe.',image:'syncless-context-flows-sky.webp'},
     {title:'Context travels with the task',light:true},
-    {title:'Three things Syncless gives',light:true},
+    {title:'What Syncless gives your team',light:true},
     {title:'Your creds. Your agent.',light:true},
     {title:'Let it travel with the work.',cta:true}
   ];
@@ -1361,6 +1354,49 @@ body>section{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
   }
 
   applyColor(); // 初始化
+
+  /* ── Pipeline capsule path ── */
+  function buildPipePath(){
+    var pipeline = document.querySelector(".pipeline");
+    var capsule = document.getElementById("ctx-capsule");
+    var svgEl = document.getElementById("pipeline-path");
+    var routeEl = document.getElementById("pipe-route");
+    if(!pipeline || !capsule || !svgEl || !routeEl) return;
+
+    var dots = pipeline.querySelectorAll(".pipe-dot");
+    if(dots.length < 2) return;
+
+    var rect = pipeline.getBoundingClientRect();
+    var points = [];
+    for(var i=0;i<dots.length;i++){
+      var dr = dots[i].getBoundingClientRect();
+      points.push({
+        x: dr.left - rect.left + dr.width/2,
+        y: dr.top - rect.top + dr.height/2
+      });
+    }
+
+    /* Build a smooth polyline path */
+    var d = "M "+points[0].x+" "+points[0].y;
+    for(var j=1;j<points.length;j++){
+      var prev = points[j-1];
+      var cur = points[j];
+      var cpx = (prev.x+cur.x)/2;
+      var cpy = (prev.y+cur.y)/2;
+      d += " Q "+prev.x+" "+cpy+" "+cpx+" "+cpy;
+      d += " Q "+cur.x+" "+cpy+" "+cur.x+" "+cur.y;
+    }
+
+    /* Set SVG path for visual dashed line */
+    svgEl.setAttribute("width",rect.width);
+    svgEl.setAttribute("height",rect.height);
+    routeEl.setAttribute("d",d);
+
+    /* Set offset-path on capsule */
+    capsule.style.offsetPath = "path('"+d+"')";
+  }
+  buildPipePath();
+  window.addEventListener("resize",buildPipePath);
   updatePageNav();
 })();
 </script>
